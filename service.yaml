@@ -1,0 +1,29 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: jennah-ui
+spec:
+  template:
+    spec:
+      containers:
+      # 1. Your React App
+      - name: jennah-ui
+        image: gcr.io/alphauslabs/jennah-ui:latest
+        ports:
+        - containerPort: 8080
+
+      # 2. The Security Guard (Sidecar)
+      - name: oauth2-proxy
+        image: quay.io/oauth2-proxy/oauth2-proxy:latest
+        args:
+        - --provider=github
+        - --upstream=http://localhost:8080
+        - --http-address=0.0.0.0:4180
+        - --email-domain=*
+        env:
+        - name: OAUTH2_PROXY_CLIENT_ID
+          value: "YOUR_GITHUB_CLIENT_ID" # We will fill this later
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          value: "YOUR_GITHUB_CLIENT_SECRET" # We will fill this later
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          value: "RANDOM_PASSWORD" # We will fill this later
