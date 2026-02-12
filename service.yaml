@@ -14,7 +14,7 @@ spec:
       containers:
       # 1. The OAuth2 Proxy (Entry Point)
       - name: oauth2-proxy
-        image: quay.io/oauth2-proxy/oauth2-proxy:latest
+        image: ${DOCKER_REGISTRY}
         ports:
           - containerPort: 4180
         args:
@@ -30,8 +30,13 @@ spec:
       # 2. Your React App
       - name: jennah-ui
         image: ${IMAGE_NAME}
-        ports:
-          - containerPort: 8080
         env:
           - name: PORT
             value: "8080"
+        startupProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
