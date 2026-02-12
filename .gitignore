@@ -35,3 +35,5 @@ build/
 *.DS_Store
 
 service.resolved.yaml
+src/pages/SubmitJobPage.tsx
+src/pages/JobsPage.tsx
