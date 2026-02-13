@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import Background from '../assets/images/Background.png';
 
 import AppHeader from '../components/AppHeader';

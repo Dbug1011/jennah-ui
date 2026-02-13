@@ -16,27 +16,39 @@ spec:
       - name: oauth2-proxy
         image: ${DOCKER_REGISTRY}
         ports:
-          - containerPort: 4180
+          - containerPort: 8080
         args:
           - --provider=github
-          - --upstream=http://localhost:8080
-          - --http-address=0.0.0.0:4180
+          - --upstream=http://localhost:3000
+          - --http-address=0.0.0.0:8080
+          - --reverse-proxy=true
+          - --cookie-samesite=lax
           - --email-domain=*
-          - --client-id=$(GITHUB_CLIENT_ID)
-          - --client-secret=$(GITHUB_CLIENT_SECRET)
-          - --cookie-secret=$(COOKIE_SECRET)
+          - --client-id=${GITHUB_CLIENT_ID}
+          - --client-secret=${GITHUB_CLIENT_SECRET}
+          - --cookie-secret=${COOKIE_SECRET}
           - --cookie-secure=true
+          - --cookie-csrf-per-request=true
+          - --redirect-url=${REDIRECT_URL}
+        startupProbe:
+          httpGet:
+            path: /ping
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 6
 
       # 2. Your React App
       - name: jennah-ui
         image: ${IMAGE_NAME}
         env:
           - name: PORT
-            value: "8080"
+            value: "3000"
         startupProbe:
           tcpSocket:
-            port: 8080
-          initialDelaySeconds: 0
+            port: 3000
+          initialDelaySeconds: 10
           periodSeconds: 10
           timeoutSeconds: 1
           failureThreshold: 3
