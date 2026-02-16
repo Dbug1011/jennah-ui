@@ -1,23 +1,25 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import HomeScreen from './pages/HomeScreen'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import Overview from './pages/Overview'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomeScreen from "./pages/HomeScreen";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import Projects from "./pages/Projects";
+import Overview from "./pages/Overview";
 
 function App() {
-  console.log('App component rendering')
+  console.log("App component rendering");
   return (
     <Router>
       <div className="min-h-screen flex flex-col bg-[#f5f5f5]">
         <Routes>
           <Route path="/" element={<HomeScreen />} />
-          <Route path="/projects" element={<Overview />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/overview" element={<Overview />} />
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<RegisterPage />} />
         </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

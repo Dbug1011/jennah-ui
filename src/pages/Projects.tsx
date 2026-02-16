@@ -17,23 +17,13 @@ import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
 import GppGoodIcon from "@mui/icons-material/GppGood";
 import AddIcon from "@mui/icons-material/Add";
-import SettingsIcon from "@mui/icons-material/Settings";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Search } from "lucide-react";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 interface Project {
   id: string;
   name: string;
@@ -43,21 +33,12 @@ interface Project {
   failed: number;
 }
 
-interface ExecutionHistory {
-  id: string;
-  status: "running" | "completed" | "failed";
-  jobName: string;
-  runId: string;
-  user: string;
-  duration: string;
-}
-
-export default function Overview() {
+export default function Projects() {
   // Sample project data
   const projects: Project[] = [
     {
       id: "1",
-      name: "Job Name",
+      name: "Project Name",
       status: "healthy",
       quotaUsed: 45,
       running: 3,
@@ -65,7 +46,7 @@ export default function Overview() {
     },
     {
       id: "2",
-      name: "Job Name",
+      name: "Project Name",
       status: "healthy",
       quotaUsed: 45,
       running: 3,
@@ -73,39 +54,11 @@ export default function Overview() {
     },
     {
       id: "3",
-      name: "Job Name",
+      name: "Project Name",
       status: "healthy",
       quotaUsed: 45,
       running: 3,
       failed: 0,
-    },
-  ];
-
-  // Sample execution history data
-  const executionHistory: ExecutionHistory[] = [
-    {
-      id: "1",
-      status: "running",
-      jobName: "Nightly Train Scheduler",
-      runId: "#train-20260209-x92",
-      user: "user.k",
-      duration: "45s",
-    },
-    {
-      id: "2",
-      status: "completed",
-      jobName: "Data Pipeline",
-      runId: "#pipe-20260208-k4l",
-      user: "user.j",
-      duration: "2m 15s",
-    },
-    {
-      id: "3",
-      status: "failed",
-      jobName: "Model Training",
-      runId: "#train-20260208-p8x",
-      user: "user.m",
-      duration: "1m 32s",
     },
   ];
 
@@ -119,14 +72,14 @@ export default function Overview() {
           </a>
           <div className="flex items-center gap-12">
             <Link
-              to="/projects"
-              className="text-sm font-normal text-gray-600 hover:text-black transition-colors"
+              to="/"
+              className="text-sm font-normal text-black hover:text-gray-700 transition-colors"
             >
               Projects
             </Link>
             <Link
-              to="/"
-              className="text-sm font-normal text-black hover:text-gray-700 transition-colors"
+              to="/jobs"
+              className="text-sm font-normal text-gray-600 hover:text-black transition-colors"
             >
               Jobs
             </Link>
@@ -139,10 +92,10 @@ export default function Overview() {
         {/* Hero Section */}
         <div className="mb-20">
           <h1 className="text-5xl md:text-6xl font-semibold text-black mb-4 leading-tight">
-            Jobs
+            Projects
           </h1>
           <p className="text-xl text-gray-600 font-light">
-            Monitor and manage your workflows
+            Build and manage your projects effortlessly
           </p>
         </div>
 
@@ -171,7 +124,7 @@ export default function Overview() {
             className="h-12 rounded-full px-6 bg-black hover:bg-gray-900 text-white font-normal text-sm transition-colors"
           >
             <AddIcon className="w-4 h-4 mr-2" />
-            Add Job
+            New Project
           </Button>
         </div>
 
@@ -214,101 +167,19 @@ export default function Overview() {
                   </div>
                 </div>
               </CardHeader>
-              <CardFooter className="flex gap-3 bg-white p-8 w-full border-t border-gray-100">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="flex-1 py-6 rounded-xl bg-gray-100 border-0 hover:bg-gray-200 text-black font-normal transition-colors"
-                >
-                  <SettingsIcon className="w-4 h-4 mr-2" />
-                  Edit
-                </Button>
+              <CardFooter className="bg-white p-8 w-full border-t border-gray-100">
                 <Button
                   size="lg"
-                  className="flex-1 py-6 rounded-xl bg-black hover:bg-gray-900 text-white font-normal transition-colors"
+                  className="w-full py-6 rounded-xl bg-black hover:bg-gray-900 text-white font-normal transition-colors"
                 >
-                  <PlayArrowIcon className="w-4 h-4 mr-2" />
-                  Run
+                  <HighlightAltIcon className="w-4 h-4 mr-2" />
+                  View Project
                 </Button>
               </CardFooter>
             </Card>
           ))}
         </div>
-        <div className="mb-20">
-          <h1 className="text-3xl md:text-4xl font-semibold text-black mb-8 leading-tight">
-            Execution History
-          </h1>
-          <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-b border-gray-100 bg-white hover:bg-white">
-                  <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-left">
-                    Status
-                  </TableHead>
-                  <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-left">
-                    Job Name
-                  </TableHead>
-                  <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-left">
-                    Run ID
-                  </TableHead>
-                  <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-left">
-                    User
-                  </TableHead>
-                  <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-left">
-                    Duration
-                  </TableHead>
-                  <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-right">
-                    Actions
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {executionHistory.map((execution) => (
-                  <TableRow
-                    key={execution.id}
-                    className="border-b border-gray-100 hover:bg-gray-50/40 transition-colors"
-                  >
-                    <TableCell className="px-6 py-4 text-sm">
-                      <span
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                          execution.status === "running"
-                            ? "bg-blue-50 text-blue-700"
-                            : execution.status === "completed"
-                              ? "bg-green-50 text-green-700"
-                              : "bg-red-50 text-red-700"
-                        }`}
-                      >
-                        {execution.status.charAt(0).toUpperCase() +
-                          execution.status.slice(1)}
-                      </span>
-                    </TableCell>
-                    <TableCell className="px-6 py-4 text-sm font-medium text-black">
-                      {execution.jobName}
-                    </TableCell>
-                    <TableCell className="px-6 py-4 text-sm text-gray-600">
-                      {execution.runId}
-                    </TableCell>
-                    <TableCell className="px-6 py-4 text-sm text-gray-600">
-                      {execution.user}
-                    </TableCell>
-                    <TableCell className="px-6 py-4 text-sm text-gray-600">
-                      {execution.duration}
-                    </TableCell>
-                    <TableCell className="px-6 py-4 text-sm text-right">
-                      <button className="text-gray-600 hover:text-black transition-colors font-medium text-xs">
-                        {execution.status === "running"
-                          ? "Stop"
-                          : execution.status === "completed"
-                            ? "View"
-                            : "Retry"}
-                      </button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
+
         {/* Account Section */}
         <div className="pt-16 border-t border-gray-100">
           <p className="text-xs font-medium text-gray-500 tracking-widest mb-8 uppercase">
