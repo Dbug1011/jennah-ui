@@ -1,20 +1,18 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+//import { Link } from "react-router-dom";
+
+// HOOKS
+import { useListJobs } from "@/api/hooks/useListJobs";
 
 // COMPONENTS
 import { JobsCard } from "@/components/JobsCard";
 import { SearchBar } from "@/components/SearchBar";
 import { NavigationBar } from "../components/NavigationBar";
-import { Button } from "@/components/ui/button";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
-
 import { ExecutionHistory } from "@/components/ExecutionHistory";
 import { AccountSection } from "@/components/AccountSection";
-// INTERFACES
-interface Jobs {
+
+// UI Interface (what JobsCard expects)
+interface UiJob {
   id: string;
   name: string;
   status: "healthy" | "warning" | "failed";
@@ -23,7 +21,7 @@ interface Jobs {
   failed: number;
 }
 
-interface ExecutionHistory {
+interface ExecutionHistoryItem {
   id: string;
   status: "running" | "completed" | "failed";
   jobName: string;
@@ -33,36 +31,43 @@ interface ExecutionHistory {
 }
 
 export default function Jobs() {
-  // Sample project data
-  const jobs: Jobs[] = [
-    {
-      id: "1",
-      name: "Job Name",
-      status: "healthy",
-      quotaUsed: 45,
-      running: 3,
-      failed: 0,
-    },
-    {
-      id: "2",
-      name: "Job Name",
-      status: "healthy",
-      quotaUsed: 45,
-      running: 3,
-      failed: 0,
-    },
-    {
-      id: "3",
-      name: "Job Name",
-      status: "healthy",
-      quotaUsed: 45,
-      running: 3,
-      failed: 0,
-    },
-  ];
+  const { fetchJobs, jobs: backendJobs, loading, error } = useListJobs();
+  const [uiJobs, setUiJobs] = useState<UiJob[]>([]);
 
-  // Sample execution history data
-  const executionHistory: ExecutionHistory[] = [
+  // Fetch jobs on component mount
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  // Transform backend data to UI format
+  useEffect(() => {
+    if (backendJobs && backendJobs.length > 0) {
+      const mappedJobs: UiJob[] = backendJobs.map((bJob) => ({
+        // Map backend jobId to UI id
+        id: bJob.jobId,
+        
+        // Use imageUri as name (since backend doesn't provide job name)
+        name: bJob.imageUri || "Untitled Job",
+        
+        // Map backend status to UI status
+        status: 
+          bJob.status === "RUNNING" || bJob.status === "COMPLETED" 
+            ? "healthy" 
+            : bJob.status === "PENDING"
+            ? "warning"
+            : "failed",
+        
+        // Default values (backend doesn't provide these metrics yet)
+        quotaUsed: 0,
+        running: bJob.status === "RUNNING" ? 1 : 0,
+        failed: bJob.status === "FAILED" ? 1 : 0,
+      }));
+      setUiJobs(mappedJobs);
+    }
+  }, [backendJobs]);
+
+  // Sample execution history data (keep mock until backend supports it)
+  const executionHistory: ExecutionHistoryItem[] = [
     {
       id: "1",
       status: "running",
@@ -102,11 +107,33 @@ export default function Jobs() {
           </p>
         </div>
         <SearchBar />
+
+        {/* Loading and Error States */}
+        {loading && (
+          <div className="text-center py-10">
+            <p className="text-gray-600">Loading jobs from Gateway...</p>
+          </div>
+        )}
+        
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
+            <p className="text-red-600">{error}</p>
+          </div>
+        )}
+
+        {/* Job Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-          {jobs.map((job) => (
+          {!loading && uiJobs.length === 0 && !error && (
+            <div className="col-span-2 text-center py-10">
+              <p className="text-gray-500">No jobs found. Submit your first job to get started!</p>
+            </div>
+          )}
+          
+          {!loading && uiJobs.map((job) => (
             <JobsCard key={job.id} job={job} />
           ))}
         </div>
+
         <div className="mb-20">
           <ExecutionHistory history={executionHistory} />
         </div>
