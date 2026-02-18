@@ -3,7 +3,7 @@ import HomeScreen from "./pages/HomeScreen";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Projects from "./pages/Projects";
-import Overview from "./pages/Overview";
+import Jobs from "./pages/Jobs";
 
 function App() {
   console.log("App component rendering");
@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/overview" element={<Overview />} />
+          <Route path="/jobs" element={<Jobs />} />
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<RegisterPage />} />
         </Routes>
