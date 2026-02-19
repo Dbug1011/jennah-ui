@@ -1,0 +1,351 @@
+{
+  "projects": [
+    {
+      "id": "project-1",
+      "name": "MyFirstProject",
+      "status": "healthy",
+      "quotaUsed": 45,
+      "running": 1,
+      "failed": 0,
+      "jobs": ["myfirstjob", "data-pipeline"]
+    },
+    {
+      "id": "project-2",
+      "name": "Data Analytics Platform",
+      "status": "healthy",
+      "quotaUsed": 62,
+      "running": 2,
+      "failed": 0,
+      "jobs": ["analytics-engine", "etl-processor"]
+    },
+    {
+      "id": "project-3",
+      "name": "ML Training Pipeline",
+      "status": "warning",
+      "quotaUsed": 85,
+      "running": 1,
+      "failed": 1,
+      "jobs": ["model-trainer", "data-validator"]
+    },
+    {
+      "id": "project-4",
+      "name": "API Gateway",
+      "status": "healthy",
+      "quotaUsed": 30,
+      "running": 3,
+      "failed": 0,
+      "jobs": ["api-server", "auth-service", "cache-warmer"]
+    },
+    {
+      "id": "project-5",
+      "name": "Infrastructure Management",
+      "status": "healthy",
+      "quotaUsed": 25,
+      "running": 1,
+      "failed": 0,
+      "jobs": ["backup-service"]
+    }
+  ],
+  "jobs": [
+    {
+      "id": "myfirstjob",
+      "jobId": "myfirstjob-21",
+      "workloadName": "myfirstjob",
+      "containerLink": "google.com",
+      "projectName": "MyFirstProject",
+      "imageUri": "google.com",
+      "status": "COMPLETED",
+      "createdAt": "2026-02-19T10:00:00Z",
+      "last_run": "2026-02-19T10:30:00Z",
+      "resources": {
+        "name": "Medium",
+        "vcpu": 4,
+        "ram": "16 GB RAM"
+      },
+      "duration": 7221,
+      "envVars": [
+        {
+          "id": "1",
+          "key": "DB_HOST",
+          "value": "10.0.0.5"
+        },
+        {
+          "id": "2",
+          "key": "API_KEY",
+          "value": "10.0.0.5"
+        }
+      ],
+      "executions": [
+        {
+          "id": "exec-1",
+          "runId": "#myfirstjob-20260219-a1b",
+          "status": "COMPLETED",
+          "startTime": "2026-02-19T09:30:00Z",
+          "endTime": "2026-02-19T09:35:12Z",
+          "duration": "5m 12s",
+          "user": "user.ryan"
+        }
+      ]
+    },
+    {
+      "id": "data-pipeline",
+      "jobId": "data-pipeline-847",
+      "workloadName": "data-pipeline",
+      "containerLink": "gcr.io/project/data-pipeline:v2.1.0",
+      "projectName": "MyFirstProject",
+      "imageUri": "gcr.io/project/data-pipeline:v2.1.0",
+      "status": "RUNNING",
+      "createdAt": "2026-02-19T05:00:00Z",
+      "last_run": "2026-02-19T08:00:00Z",
+      "resources": {
+        "name": "Heavy",
+        "vcpu": 16,
+        "ram": "64 GB RAM"
+      },
+      "duration": 14400,
+      "envVars": [
+        {
+          "id": "1",
+          "key": "DATA_SOURCE",
+          "value": "s3://data-bucket/raw"
+        },
+        {
+          "id": "2",
+          "key": "OUTPUT_PATH",
+          "value": "s3://data-bucket/processed"
+        }
+      ],
+      "executions": []
+    },
+    {
+      "id": "analytics-engine",
+      "jobId": "analytics-engine-592",
+      "workloadName": "analytics-engine",
+      "containerLink": "gcr.io/project/analytics:v1.5.2",
+      "projectName": "Data Analytics Platform",
+      "imageUri": "gcr.io/project/analytics:v1.5.2",
+      "status": "COMPLETED",
+      "createdAt": "2026-02-19T11:00:00Z",
+      "last_run": "2026-02-19T11:45:00Z",
+      "resources": {
+        "name": "Medium",
+        "vcpu": 4,
+        "ram": "16 GB RAM"
+      },
+      "duration": 1800,
+      "envVars": [
+        {
+          "id": "1",
+          "key": "DATABASE_URL",
+          "value": "postgres://analytics-db:5432"
+        }
+      ],
+      "executions": []
+    },
+    {
+      "id": "etl-processor",
+      "jobId": "etl-processor-213",
+      "workloadName": "etl-processor",
+      "containerLink": "gcr.io/project/etl:v3.0.1",
+      "projectName": "Data Analytics Platform",
+      "imageUri": "gcr.io/project/etl:v3.0.1",
+      "status": "PENDING",
+      "createdAt": "2026-02-19T12:45:00Z",
+      "last_run": "2026-02-19T09:45:00Z",
+      "resources": {
+        "name": "Heavy",
+        "vcpu": 16,
+        "ram": "64 GB RAM"
+      },
+      "duration": 3600,
+      "envVars": [
+        {
+          "id": "1",
+          "key": "BATCH_SIZE",
+          "value": "10000"
+        },
+        {
+          "id": "2",
+          "key": "THREADS",
+          "value": "8"
+        }
+      ],
+      "executions": []
+    },
+    {
+      "id": "model-trainer",
+      "jobId": "model-trainer-761",
+      "workloadName": "model-trainer",
+      "containerLink": "gcr.io/project/ml-trainer:v2.4.0",
+      "projectName": "ML Training Pipeline",
+      "imageUri": "gcr.io/project/ml-trainer:v2.4.0",
+      "status": "RUNNING",
+      "createdAt": "2026-02-18T12:00:00Z",
+      "last_run": "2026-02-19T04:00:00Z",
+      "resources": {
+        "name": "GPU",
+        "vcpu": 8,
+        "ram": "4 GB RAM"
+      },
+      "duration": 28800,
+      "envVars": [
+        {
+          "id": "1",
+          "key": "LEARNING_RATE",
+          "value": "0.001"
+        },
+        {
+          "id": "2",
+          "key": "EPOCHS",
+          "value": "100"
+        },
+        {
+          "id": "3",
+          "key": "MODEL_PATH",
+          "value": "/models/v2.4.0"
+        }
+      ],
+      "executions": []
+    },
+    {
+      "id": "data-validator",
+      "jobId": "data-validator-429",
+      "workloadName": "data-validator",
+      "containerLink": "gcr.io/project/validator:v1.2.3",
+      "projectName": "ML Training Pipeline",
+      "imageUri": "gcr.io/project/validator:v1.2.3",
+      "status": "FAILED",
+      "createdAt": "2026-02-19T06:00:00Z",
+      "last_run": "2026-02-19T08:00:00Z",
+      "resources": {
+        "name": "Medium",
+        "vcpu": 4,
+        "ram": "16 GB RAM"
+      },
+      "duration": 1200,
+      "envVars": [
+        {
+          "id": "1",
+          "key": "VALIDATION_RULES",
+          "value": "/config/rules.json"
+        }
+      ],
+      "executions": []
+    },
+    {
+      "id": "api-server",
+      "jobId": "api-server-156",
+      "workloadName": "api-server",
+      "containerLink": "gcr.io/project/api:v4.2.1",
+      "projectName": "API Gateway",
+      "imageUri": "gcr.io/project/api:v4.2.1",
+      "status": "RUNNING",
+      "createdAt": "2026-02-18T00:00:00Z",
+      "last_run": "2026-02-19T11:30:00Z",
+      "resources": {
+        "name": "Medium",
+        "vcpu": 4,
+        "ram": "16 GB RAM"
+      },
+      "duration": 3600,
+      "envVars": [
+        {
+          "id": "1",
+          "key": "PORT",
+          "value": "8080"
+        },
+        {
+          "id": "2",
+          "key": "LOG_LEVEL",
+          "value": "INFO"
+        }
+      ],
+      "executions": []
+    },
+    {
+      "id": "auth-service",
+      "jobId": "auth-service-738",
+      "workloadName": "auth-service",
+      "containerLink": "gcr.io/project/auth:v2.1.0",
+      "projectName": "API Gateway",
+      "imageUri": "gcr.io/project/auth:v2.1.0",
+      "status": "RUNNING",
+      "createdAt": "2026-02-19T04:00:00Z",
+      "last_run": "2026-02-19T12:15:00Z",
+      "resources": {
+        "name": "Small",
+        "vcpu": 1,
+        "ram": "4 GB RAM"
+      },
+      "duration": 1800,
+      "envVars": [
+        {
+          "id": "1",
+          "key": "JWT_SECRET",
+          "value": "*** SECRET ***"
+        },
+        {
+          "id": "2",
+          "key": "TOKEN_EXPIRY",
+          "value": "3600"
+        }
+      ],
+      "executions": []
+    },
+    {
+      "id": "cache-warmer",
+      "jobId": "cache-warmer-564",
+      "workloadName": "cache-warmer",
+      "containerLink": "gcr.io/project/cache:v1.0.5",
+      "projectName": "API Gateway",
+      "imageUri": "gcr.io/project/cache:v1.0.5",
+      "status": "COMPLETED",
+      "createdAt": "2026-02-17T00:00:00Z",
+      "last_run": "2026-02-19T00:00:00Z",
+      "resources": {
+        "name": "Small",
+        "vcpu": 1,
+        "ram": "4 GB RAM"
+      },
+      "duration": 900,
+      "envVars": [
+        {
+          "id": "1",
+          "key": "REDIS_URL",
+          "value": "redis://cache-server:6379"
+        }
+      ],
+      "executions": []
+    },
+    {
+      "id": "backup-service",
+      "jobId": "backup-service-291",
+      "workloadName": "backup-service",
+      "containerLink": "gcr.io/project/backup:v1.1.0",
+      "projectName": "Infrastructure Management",
+      "imageUri": "gcr.io/project/backup:v1.1.0",
+      "status": "SCHEDULED",
+      "createdAt": "2026-02-16T00:00:00Z",
+      "last_run": "2026-02-18T00:00:00Z",
+      "resources": {
+        "name": "Heavy",
+        "vcpu": 16,
+        "ram": "64 GB RAM"
+      },
+      "duration": 10800,
+      "envVars": [
+        {
+          "id": "1",
+          "key": "BACKUP_DESTINATION",
+          "value": "s3://backups/daily"
+        },
+        {
+          "id": "2",
+          "key": "RETENTION_DAYS",
+          "value": "30"
+        }
+      ],
+      "executions": []
+    }
+  ]
+}
