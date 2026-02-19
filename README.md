@@ -1,4 +1,3 @@
-Below is a **clean, professional README.md version** suitable for production or thesis documentation.
 
 ---
 
