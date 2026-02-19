@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Projects from "./pages/Projects";
 import Jobs from "./pages/Jobs";
+import CreateJobPage from "./pages/CreateJobPage";
 
 function App() {
   console.log("App component rendering");
@@ -16,6 +17,7 @@ function App() {
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<RegisterPage />} />
+          <Route path="/jobs/create" element={<CreateJobPage />} />
         </Routes>
       </div>
     </Router>
