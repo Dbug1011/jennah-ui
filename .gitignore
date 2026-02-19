@@ -39,4 +39,5 @@ service.resolved.yaml
 *.DS_Store
 
 service.resolved.yaml
-src/pages/SubmitJobPage.tsx
+
+*.DS_Store
