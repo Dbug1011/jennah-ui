@@ -17,7 +17,7 @@ import { ExecutionHistory } from "@/components/ExecutionHistory";
 import { getJobs } from "@/data/sampleData";
 import type { Job } from "@/data/sampleData";
 import { useListJobs } from "@/api/hooks/useListJobs";
-import { client } from "@/api/client";
+
 
 // INTERFACES
 interface JobWithMetadata extends Job {
@@ -51,17 +51,6 @@ export default function Jobs() {
   >([]);
   const location = useLocation();
   const { fetchJobs, loading, error } = useListJobs();
-
-  // Debug function to manually trigger API call
-  const handleForceReload = async () => {
-    console.log("🔴 FORCE RELOAD Button clicked!");
-    try {
-      const response = await client.listJobs({ tenantId: "default" });
-      console.log("✅ Success:", response);
-    } catch (err) {
-      console.error("❌ Failed:", err);
-    }
-  };
 
   useEffect(() => {
     console.log("🔵 Jobs page mounted, useEffect running...");
@@ -137,21 +126,7 @@ export default function Jobs() {
           </p>
           
           {/* DEBUG BUTTON - Remove after testing */}
-          <button 
-            onClick={handleForceReload}
-            style={{ 
-              padding: '10px 20px', 
-              background: 'red', 
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              marginTop: '10px',
-              fontWeight: 'bold'
-            }}
-          >
-            🔴 FORCE RELOAD JOBS (DEBUG)
-          </button>
+         
           
           {loading && <p style={{ color: 'blue', marginTop: '10px' }}>⏳ Loading jobs from API...</p>}
           {error && <p style={{ color: 'red', marginTop: '10px' }}>❌ Error: {error}</p>}
