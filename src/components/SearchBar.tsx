@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   InputGroup,
@@ -27,18 +27,21 @@ export function SearchBar() {
       <Button
         variant="outline"
         size="sm"
-        className="h-12 rounded-full  border-gray-300 bg-white hover:bg-gray-50 font-normal text-sm transition-colors"
+        className="h-12 rounded-full border-gray-300 bg-white hover:bg-gray-50 font-normal text-sm transition-colors"
       >
         <TuneIcon className="w-4 h-4 text-gray-600" />
         Filter
       </Button>
-      <Button
-        size="sm"
-        className="h-12 rounded-full px-6  bg-black hover:bg-gray-900 text-white font-normal text-sm transition-colors"
-      >
-        <AddIcon className="w-4 h-4" />
-        New {pathname === "/projects" ? "Project" : "Job"}
-      </Button>
+      <div className="h-12 flex items-center justify-center rounded-full px-6 bg-black hover:bg-gray-900 text-white font-normal text-sm transition-colors">
+        <Link
+          to={pathname === "/projects" ? "/projects/create" : "/jobs/create"}
+        >
+          <Button size="sm" className="bg-transparent">
+            <AddIcon className="w-4 h-4" />
+            New {pathname === "/projects" ? "Project" : "Job"}
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

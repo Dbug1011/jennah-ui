@@ -4,9 +4,21 @@ import { Button } from "@/components/ui/button";
 import { DurationSelector } from "./DurationSelector";
 import { EnvVariablesTable } from "./EnvVariablesTable";
 import type { EnvVar } from "./EnvVariablesTable";
-import { useState } from "react";
-import { SAMPLE_PROJECTS, createJob } from "@/data/sampleData";
+import { useState, useEffect } from "react";
+import {
+  type Job,
+  type Project,
+  getProjects,
+  updateJob,
+} from "@/data/sampleData";
 import { useNavigate } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -15,13 +27,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const resources = [
   {
@@ -54,14 +59,30 @@ const resources = [
   },
 ];
 
-export function NewJobForm() {
+interface EditJobFormProps {
+  job?: Job;
+}
+
+export function EditJobForm({ job }: EditJobFormProps) {
   const navigate = useNavigate();
-  const [jobName, setJobName] = useState("");
-  const [containerLink, setContainerLink] = useState("");
-  const [selected, setSelected] = useState("medium");
-  const [duration, setDuration] = useState(0);
-  const [project, setProject] = useState(SAMPLE_PROJECTS[0]?.name || "");
-  const [envVars, setEnvVars] = useState<EnvVar[]>([]);
+  const [jobName, setJobName] = useState(job?.workloadName || "");
+  const [containerLink, setContainerLink] = useState(job?.containerLink || "");
+  const [selected, setSelected] = useState(
+    job?.resources.name.toLowerCase() || "medium",
+  );
+  const [duration, setDuration] = useState(job?.duration || 0);
+  const [project, setProject] = useState(job?.projectName || "");
+  const [envVars, setEnvVars] = useState<EnvVar[]>(
+    job?.envVars || [
+      { id: "1", key: "DB_HOST", value: "10.0.0.5" },
+      { id: "2", key: "API_KEY", value: "10.0.0.5", error: "Inaccessible" },
+    ],
+  );
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    setProjects(getProjects());
+  }, []);
 
   const getResourceDetails = () => {
     const resourceMap: {
@@ -76,17 +97,34 @@ export function NewJobForm() {
   };
 
   const handleSubmit = () => {
-    if (!jobName.trim() || !containerLink.trim() || !project) return;
-
-    createJob(
+    console.log("EditJobForm handleSubmit called", {
+      job: job?.id,
       jobName,
       containerLink,
       project,
-      getResourceDetails(),
+    });
+    if (!job || !jobName.trim() || !containerLink.trim() || !project) {
+      console.warn("Form validation failed", {
+        job: !!job,
+        jobName: jobName.trim(),
+        containerLink: containerLink.trim(),
+        project,
+      });
+      return;
+    }
+
+    console.log("Calling updateJob...");
+    updateJob(job.id, {
+      workloadName: jobName,
+      containerLink,
+      imageUri: containerLink, // Add this to sync imageUri with containerLink
+      projectName: project,
+      resources: getResourceDetails(),
       duration,
       envVars,
-    );
-    navigate("/jobs");
+    });
+    console.log("UpdateJob complete, navigating...");
+    navigate(`/jobs/${job.id}`);
   };
 
   return (
@@ -149,7 +187,7 @@ export function NewJobForm() {
                 <SelectValue placeholder="Select a project" />
               </SelectTrigger>
               <SelectContent>
-                {SAMPLE_PROJECTS.map((proj) => (
+                {projects.map((proj) => (
                   <SelectItem key={proj.id} value={proj.name}>
                     {proj.name}
                   </SelectItem>
@@ -243,14 +281,17 @@ export function NewJobForm() {
       </div>
 
       {/* Submit Section */}
-      <div className="flex w-auto pt-4">
+      <div className="flex w-auto gap-2 pt-4">
         <Button
-          onClick={handleSubmit}
-          disabled={!jobName.trim() || !containerLink.trim() || !project}
+          onClick={() => navigate(-1)}
+          variant="outline"
           size="lg"
           className="px-8"
         >
-          Create Workload
+          Cancel
+        </Button>
+        <Button onClick={handleSubmit} size="lg" className="px-8">
+          {job ? "Update Workload" : "Create Workload"}
         </Button>
       </div>
     </div>
