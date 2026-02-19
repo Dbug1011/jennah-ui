@@ -12,7 +12,6 @@ export function useSubmitJob() {
     setError(null);
 
     try {
-      // Cast to select the unary overload explicitly
       const res = await (client.submitJob as (request: SubmitJobRequest) => Promise<SubmitJobResponse>)(jobData);
       setResponse(res);
       return res;

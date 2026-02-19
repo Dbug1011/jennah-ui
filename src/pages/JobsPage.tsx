@@ -1,24 +1,29 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 // COMPONENTS
 import { JobsCard } from "@/components/JobsCard";
 import { SearchBar } from "@/components/SearchBar";
 import { NavigationBar } from "../components/NavigationBar";
-import { Button } from "@/components/ui/button";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
+// import { Button } from "@/components/ui/button";
+// import {
+//   InputGroup,
+//   InputGroupAddon,
+//   InputGroupInput,
+// } from "@/components/ui/input-group";
 
 import { ExecutionHistory } from "@/components/ExecutionHistory";
-import { AccountSection } from "@/components/AccountSection";
+// import { AccountSection } from "@/components/AccountSection";
 import { getJobs } from "@/data/sampleData";
 import type { Job } from "@/data/sampleData";
+import { useListJobs } from "@/api/hooks/useListJobs";
+import { client } from "@/api/client";
 
 // INTERFACES
 interface JobWithMetadata extends Job {
+  $typeName: string;
+  tenantId: string;
+  imageUri: string;
   workloadName: string;
   projectName: string;
 }
@@ -45,13 +50,36 @@ export default function Jobs() {
     ExecutionHistoryItem[]
   >([]);
   const location = useLocation();
+  const { fetchJobs, loading, error } = useListJobs();
+
+  // Debug function to manually trigger API call
+  const handleForceReload = async () => {
+    console.log("🔴 FORCE RELOAD Button clicked!");
+    try {
+      const response = await client.listJobs({ tenantId: "default" });
+      console.log("✅ Success:", response);
+    } catch (err) {
+      console.error("❌ Failed:", err);
+    }
+  };
 
   useEffect(() => {
+    console.log("🔵 Jobs page mounted, useEffect running...");
+    
+    // Call the API hook
+    fetchJobs()
+      .then((response) => {
+        console.log("🟢 API Response received:", response);
+      })
+      .catch((err) => {
+        console.error("🔴 API Error:", err);
+      });
     const allJobs = getJobs();
     // Convert sample jobs to JobWithMetadata format
     const formattedJobs: JobWithMetadata[] = allJobs.map(
       (job) =>
         ({
+          $typeName: "JobCardJob",
           jobId: job.jobId,
           tenantId: "tenant-1",
           imageUri: job.containerLink,
@@ -107,11 +135,31 @@ export default function Jobs() {
           <p className="text-xl text-gray-600 font-light">
             Monitor and manage your workflows
           </p>
+          
+          {/* DEBUG BUTTON - Remove after testing */}
+          <button 
+            onClick={handleForceReload}
+            style={{ 
+              padding: '10px 20px', 
+              background: 'red', 
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              marginTop: '10px',
+              fontWeight: 'bold'
+            }}
+          >
+            🔴 FORCE RELOAD JOBS (DEBUG)
+          </button>
+          
+          {loading && <p style={{ color: 'blue', marginTop: '10px' }}>⏳ Loading jobs from API...</p>}
+          {error && <p style={{ color: 'red', marginTop: '10px' }}>❌ Error: {error}</p>}
         </div>
         <SearchBar />
         <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-1 gap-8 mb-20">
           {jobs.map((job) => (
-            <JobsCard key={job.jobId} job={job} />
+            <JobsCard key={job.jobId} job={job as any} />
           ))}
         </div>
         <div className="mb-20">

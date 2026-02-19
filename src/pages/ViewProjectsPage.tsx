@@ -3,17 +3,17 @@ import { useState, useEffect } from "react";
 
 // COMPONENTS
 import { JobsCard } from "@/components/JobsCard";
-import { SearchBar } from "@/components/SearchBar";
+// import { SearchBar } from "@/components/SearchBar";
 import { NavigationBar } from "../components/NavigationBar";
 import { Button } from "@/components/ui/button";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
+// import {
+//   InputGroup,
+//   InputGroupAddon,
+//   InputGroupInput,
+// } from "@/components/ui/input-group";
 
-import { ExecutionHistory } from "@/components/ExecutionHistory";
-import { AccountSection } from "@/components/AccountSection";
+// import { ExecutionHistory } from "@/components/ExecutionHistory";
+// import { AccountSection } from "@/components/AccountSection";
 import {
   getProjectById,
   getJobsByProjectId,
@@ -23,20 +23,20 @@ import {
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 // INTERFACES
-interface JobWithMetadata extends Job {
-  workloadName: string;
-  projectName: string;
-}
+// interface JobWithMetadata extends Job {
+//   workloadName: string;
+//   projectName: string;
+// }
 
-interface ExecutionHistoryItem {
-  id: string;
-  status: "Running" | "Completed" | "Failed";
-  jobName: string;
-  jobId: string;
-  runId: string;
-  user: string;
-  duration: string;
-}
+// interface ExecutionHistoryItem {
+//   id: string;
+//   status: "Running" | "Completed" | "Failed";
+//   jobName: string;
+//   jobId: string;
+//   runId: string;
+//   user: string;
+//   duration: string;
+// }
 
 export default function ViewProjectPage() {
   const { projectId } = useParams<{ projectId: string }>();
