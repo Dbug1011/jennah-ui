@@ -1,5 +1,5 @@
 import { NavigationBar } from "@/components/NavigationBar";
-import { AccountSection } from "@/components/AccountSection";
+// import { AccountSection } from "@/components/AccountSection";
 import { ViewJobForm } from "@/components/ViewJobForm";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { getJobById } from "@/data/sampleData";

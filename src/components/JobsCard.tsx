@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -14,6 +14,7 @@ import {
 import type { Job } from "@/gen/proto/jennah_pb";
 
 interface JobCardJob extends Job {
+  id: any;
   workloadName: string;
   projectName: string;
 }

@@ -1,4 +1,3 @@
-Below is a **clean, professional README.md version** suitable for production or thesis documentation.
 
 ---
 
@@ -8,14 +7,6 @@ Below is a **clean, professional README.md version** suitable for production or 
 
 **Jennah UI** is a React-based cloud workload management dashboard designed to interact with the Project Jennah distributed backend system.
 It provides a user-friendly interface for submitting compute jobs, monitoring job execution status, and managing tenant workloads through a secure, authenticated web interface deployed on Google Cloud Run.
-
-This repository contains:
-
-* Frontend application source code
-* API client integrations
-* Containerization configurations
-* Cloud Run deployment manifests
-* Authentication proxy configuration
 
 ---
 
@@ -177,12 +168,3 @@ gcloud run services replace service.resolved.yaml --region REGION
 * Monitor logs via Google Cloud Logging
 
 ---
-
-## Contributors
-
-Project Jennah Development Team
-Frontend UI Module
-
----
-
-If you want, I can next create a **matching README template for the Gateway, Worker, and Infrastructure repositories**, so your whole project documentation looks **uniform and professional** (very useful for thesis submission).

@@ -2,7 +2,7 @@ import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { DeploymentService } from "../gen/proto/jennah_pb"; 
 
-const API_URL = import.meta.env.VITE_API_GATEWAY_URL || "http://localhost:8080";
+const API_URL = import.meta.env.VITE_API_GATEWAY_URL || "/api";
 
 const transport = createConnectTransport({
   baseUrl: API_URL,
