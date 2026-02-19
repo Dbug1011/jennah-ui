@@ -30,6 +30,10 @@ spec:
           - --cookie-secure=true
           - --cookie-csrf-per-request=true
           - --redirect-url=${REDIRECT_URL}
+          - --set-authorization-header=true
+          - --set-xauthrequest=true
+          - --pass-access-token=true
+          - --pass-user-headers=true
         startupProbe:
           httpGet:
             path: /ping
