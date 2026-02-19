@@ -6,19 +6,23 @@ const API_URL = import.meta.env.VITE_API_GATEWAY_URL || "/api";
 
 const transport = createConnectTransport({
   baseUrl: API_URL,
+  
+  // 1. Keeps the cookies attached for the browser
+  fetch: (input, init) => {
+    return globalThis.fetch(input, {
+      ...init,
+      credentials: "include", 
+    });
+  },
+  
+  // 2. NEW: Intercepts the RPC call and stamps the exact header Person 3 wants
   interceptors: [
     (next) => async (req) => {
-
-      const request = req as any;
-      
-      request.init = {
-        ...request.init,
-        credentials: "include",
-      };
-
+      // Set the email header. Make sure this matches the email you log in with!
+      req.header.set("X-OAuth-Email", "karis@bisu.edu.ph"); 
       return await next(req);
-    },
-  ],
+    }
+  ]
 });
 
 export const client = createClient(DeploymentService, transport);
