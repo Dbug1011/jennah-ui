@@ -3,44 +3,10 @@ import { NavigationBar } from "../components/NavigationBar";
 import { ProjectCard } from "@/components/ProjectCard";
 import { AccountSection } from "@/components/AccountSection";
 import { SearchBar } from "@/components/SearchBar";
-
-interface Project {
-  id: string;
-  name: string;
-  status: "healthy" | "warning" | "failed";
-  quotaUsed: number;
-  running: number;
-  failed: number;
-}
+import { SAMPLE_PROJECTS } from "@/data/sampleData";
 
 export default function Projects() {
-  // Sample project data
-  const projects: Project[] = [
-    {
-      id: "1",
-      name: "Project Name",
-      status: "healthy",
-      quotaUsed: 45,
-      running: 3,
-      failed: 0,
-    },
-    {
-      id: "2",
-      name: "Project Name",
-      status: "healthy",
-      quotaUsed: 45,
-      running: 3,
-      failed: 0,
-    },
-    {
-      id: "3",
-      name: "Project Name",
-      status: "healthy",
-      quotaUsed: 45,
-      running: 3,
-      failed: 0,
-    },
-  ];
+  const projects = SAMPLE_PROJECTS;
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -55,12 +21,12 @@ export default function Projects() {
           </p>
         </div>
         <SearchBar />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-1 gap-8 mb-20">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
         </div>
-        <AccountSection />
+        {/* <AccountSection /> */}
       </main>
     </div>
   );
