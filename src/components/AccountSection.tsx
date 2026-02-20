@@ -6,6 +6,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
+import { logoutOAuth } from "@/api/auth";
 
 export function AccountSection() {
   const [open, setOpen] = useState(false);
@@ -33,8 +34,8 @@ export function AccountSection() {
           <PopoverContent className="w-40" align="end">
             <button
               onClick={() => {
-                console.log("Logout clicked");
                 setOpen(false);
+                logoutOAuth();
               }}
               className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded transition-colors"
             >

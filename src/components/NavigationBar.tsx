@@ -2,11 +2,12 @@ import JennahLogo from "../assets/images/LogoBlack.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
+import { logoutOAuth } from "@/api/auth";
 
 export function NavigationBar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, setUser } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const pathname = location.pathname.replace(/\/$/, "") || "/";
@@ -15,10 +16,10 @@ export function NavigationBar() {
   const normalNav =
     "text-sm font-normal text-grey-600 hover:text-black transition-colors";
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-    setShowUserMenu(false);
+  const handleLogout = async () => {
+    // Let oauth2-proxy handle the redirect — do NOT setUser(null) before the
+    // window.location redirect fires or ProtectedRoute will navigate first.
+    await logoutOAuth();
   };
 
   return (
@@ -28,7 +29,7 @@ export function NavigationBar() {
           <img src={JennahLogo} alt="Jennah Logo" className="h-7" />
         </a>
         <div className="flex items-center gap-12">
-          {isAuthenticated ? (
+          {user ? (
             <>
               <Link
                 to="/projects"
