@@ -2,14 +2,16 @@ import React, {
   createContext,
   useState,
   useContext,
-  ReactNode,
   useEffect,
+  type ReactNode,
 } from "react";
+import { getCurrentUser, redirectToOAuthLogin, logoutOAuth } from "@/api/auth";
 
 export interface User {
   id: string;
   email: string;
   name: string;
+  provider?: string;
 }
 
 interface AuthContextType {
@@ -27,87 +29,60 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check if user is already logged in on mount
+  // Check if user is already authenticated via oauth2-proxy on mount
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
+    const checkAuthentication = async () => {
       try {
-        setUser(JSON.parse(savedUser));
+        const authenticatedUser = await getCurrentUser();
+        if (authenticatedUser) {
+          setUser(authenticatedUser);
+        }
       } catch (error) {
-        console.error("Failed to parse saved user:", error);
-        localStorage.removeItem("user");
+        console.error("Failed to check authentication:", error);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    setIsLoading(false); // Add this line
+    };
+
+    checkAuthentication();
   }, []);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      // Simulate API call - in production this would be a real API
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Basic validation
-      if (!email || !password) {
-        throw new Error("Email and password are required");
-      }
-
-      if (!email.includes("@")) {
-        throw new Error("Invalid email format");
-      }
-
-      // Create mock user
-      const newUser: User = {
-        id: `user-${Date.now()}`,
-        email,
-        name: email.split("@")[0],
-      };
-
-      // Save to localStorage
-      localStorage.setItem("user", JSON.stringify(newUser));
-      setUser(newUser);
-    } finally {
+      // OAuth login: redirect to oauth2-proxy which handles GitHub OAuth
+      // oauth2-proxy will handle the redirect to GitHub and return with authenticated session
+      redirectToOAuthLogin();
+      
+      // The redirect above will navigate away, but we keep this as backup
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error("OAuth login failed:", error);
       setIsLoading(false);
+      throw error;
     }
   };
 
   const register = async (email: string, password: string, name: string) => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Basic validation
-      if (!email || !password || !name) {
-        throw new Error("All fields are required");
-      }
-
-      if (!email.includes("@")) {
-        throw new Error("Invalid email format");
-      }
-
-      if (password.length < 6) {
-        throw new Error("Password must be at least 6 characters");
-      }
-
-      // Create mock user
-      const newUser: User = {
-        id: `user-${Date.now()}`,
-        email,
-        name,
-      };
-
-      // Save to localStorage
-      localStorage.setItem("user", JSON.stringify(newUser));
-      setUser(newUser);
-    } finally {
+      // OAuth doesn't require separate registration - GitHub account IS the registration
+      // Redirect to oauth2-proxy login which will create user session on GitHub auth
+      redirectToOAuthLogin();
+      
+      // The redirect above will navigate away, but we keep this as backup
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error("OAuth register failed:", error);
       setIsLoading(false);
+      throw error;
     }
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
     setUser(null);
+    // Call oauth2-proxy logout endpoint to clear session cookie
+    logoutOAuth();
   };
 
   return (
