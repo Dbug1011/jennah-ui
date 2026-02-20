@@ -50,19 +50,10 @@ export default function Jobs() {
     ExecutionHistoryItem[]
   >([]);
   const location = useLocation();
-  const { fetchJobs, loading, error } = useListJobs();
+  const { fetchJobs } = useListJobs();
 
   useEffect(() => {
-    console.log("🔵 Jobs page mounted, useEffect running...");
-    
-    // Call the API hook
-    fetchJobs()
-      .then((response) => {
-        console.log("🟢 API Response received:", response);
-      })
-      .catch((err) => {
-        console.error("🔴 API Error:", err);
-      });
+    fetchJobs();
     const allJobs = getJobs();
     // Convert sample jobs to JobWithMetadata format
     const formattedJobs: JobWithMetadata[] = allJobs.map(
@@ -124,12 +115,6 @@ export default function Jobs() {
           <p className="text-xl text-gray-600 font-light">
             Monitor and manage your workflows
           </p>
-          
-          {/* DEBUG BUTTON - Remove after testing */}
-         
-          
-          {loading && <p style={{ color: 'blue', marginTop: '10px' }}>⏳ Loading jobs from API...</p>}
-          {error && <p style={{ color: 'red', marginTop: '10px' }}>❌ Error: {error}</p>}
         </div>
         <SearchBar />
         <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-1 gap-8 mb-20">

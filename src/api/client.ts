@@ -15,10 +15,8 @@ const transport = createConnectTransport({
     });
   },
   
-  // 2. NEW: Intercepts the RPC call and stamps the exact header Person 3 wants
   interceptors: [
     (next) => async (req) => {
-      // Set the email header. Make sure this matches the email you log in with!
       req.header.set("X-OAuth-Email", "karis@bisu.edu.ph"); 
       return await next(req);
     }

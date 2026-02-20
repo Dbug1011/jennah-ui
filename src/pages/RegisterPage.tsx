@@ -12,8 +12,6 @@ export default function RegisterPage() {
   const handleOAuthSignUp = async () => {
     setError("");
     try {
-      // OAuth signup: same as login - GitHub account IS the signup
-      // oauth2-proxy will handle the redirect to GitHub and create session
       redirectToOAuthLogin();
     } catch (err) {
       setError(err instanceof Error ? err.message : "OAuth sign-up failed");

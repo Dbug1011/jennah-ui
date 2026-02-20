@@ -34,6 +34,11 @@ spec:
           - --set-xauthrequest=true
           - --pass-access-token=true
           - --pass-user-headers=true
+          - --skip-auth-regex=^/auth/
+          - --skip-auth-regex=^/oauth2/
+          - --skip-auth-regex=^/assets/
+          - --skip-auth-route=GET=^/$
+          - --skip-provider-button=true
         startupProbe:
           httpGet:
             path: /ping
@@ -43,7 +48,7 @@ spec:
           timeoutSeconds: 3
           failureThreshold: 6
 
-      # 2. Your React App
+      # 2. React App
       - name: jennah-ui
         image: ${IMAGE_NAME}
         env:
