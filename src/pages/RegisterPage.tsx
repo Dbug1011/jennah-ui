@@ -1,31 +1,22 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Background from "../assets/images/bg/1.png";
-import MailIcon from "@mui/icons-material/Mail";
-import { grey } from "@mui/material/colors";
-import PasswordIcon from "@mui/icons-material/Password";
 import RocketImg from "../assets/images/side/rocket.png";
 import AppHeader from "../components/AppHeader";
 import { useAuth } from "@/context/AuthContext";
-import { Input } from "@/components/ui/input";
+import { redirectToOAuthLogin } from "@/api/auth";
 
 export default function RegisterPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [error, setError] = useState("");
-  const { register, isLoading } = useAuth();
-  const navigate = useNavigate();
+  const { isLoading } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleOAuthSignUp = async () => {
     setError("");
-
     try {
-      await register(email, password, name);
-      navigate("/projects");
+      // OAuth signup: same as login - GitHub account IS the signup
+      // oauth2-proxy will handle the redirect to GitHub and create session
+      redirectToOAuthLogin();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Registration failed");
+      setError(err instanceof Error ? err.message : "OAuth sign-up failed");
     }
   };
 
@@ -40,109 +31,45 @@ export default function RegisterPage() {
       }}
     >
       <AppHeader />
-      <main className="flex-1 flex flex-row items-center justify-center z-[1] mt-10 w-full min-h-[80vh] max-[900px]:flex-col max-[900px]:mt-0 max-[900px]:min-h-0 max-[600px]:flex-col max-[600px]:mt-0 max-[600px]:min-h-0">
-        <div className="flex-1 flex items-center justify-center min-w-[320px] max-w-[520px] z-[2] max-[900px]:hidden max-[600px]:flex max-[600px]:min-w-[120px] max-[600px]:max-w-[180px] max-[600px]:mb-[18px]">
-          <img
-            src={RocketImg}
-            alt="Rocket and Clouds"
-            className="w-[90%] max-w-[420px] h-auto object-contain max-[600px]:w-[60vw] max-[600px]:max-w-[180px]"
-          />
-        </div>
-        <div className="flex-1 flex flex-col items-start justify-center min-w-[320px] max-w-[520px] ml-8 z-[2] max-[900px]:min-w-[220px] max-[900px]:max-w-[98vw] max-[900px]:ml-0 max-[900px]:items-center max-[900px]:text-center max-[600px]:min-w-[120px] max-[600px]:max-w-[98vw] max-[600px]:ml-0 max-[600px]:items-center max-[600px]:text-center">
-          <h1 className="text-[3.2rem] font-light text-white text-left mb-12 leading-[1.1] font-sans tracking-[-1px] [text-shadow:0_2px_16px_rgba(0,0,0,0.18)] max-[900px]:text-center max-[600px]:text-[2rem] max-[600px]:text-center">
-            Welcome to
-            <br />
-            Jennah
+      <main className="flex-1 flex flex-col gap-3 items-center justify-center z-[1] mt-10 max-[900px]:mt-0 max-[900px]:px-[10%]">
+        <div className="flex-col flex gap-3 justify-center items-center text-center mb-2 max-[600px]:mb-4">
+          <h1 className="text-[3.2rem] font-light text-white text-center leading-[1.1] font-sans tracking-[-1px] [text-shadow:0_2px_16px_rgba(0,0,0,0.18)] max-[600px]:text-[2rem]">
+            Create your account
           </h1>
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col items-start w-full max-w-[480px] mx-auto mb-8 max-[900px]:max-w-[98vw] max-[900px]:items-center max-[600px]:max-w-[98vw] max-[600px]:items-center"
+          <p className="text-[rgba(255,255,255,0.7)] text-sm font-sans">
+            Sign up with your GitHub account to get started.
+          </p>
+        </div>
+        <div className="flex flex-col items-center w-full max-w-[480px] mx-auto mb-8 max-[600px]:max-w-[98vw]">
+          {error && (
+            <div className="w-full bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
+              {error}
+            </div>
+          )}
+
+          <button
+            onClick={handleOAuthSignUp}
+            disabled={isLoading}
+            className="bg-[#238636] hover:bg-[#2ea043] text-white rounded-full py-4 w-full max-w-[240px] text-[1.3rem] font-semibold border-none outline-none mt-3 mb-6 cursor-pointer transition-colors duration-200 font-sans max-[600px]:text-base max-[600px]:py-3 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
           >
-            {error && (
-              <div className="w-full bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
-                {error}
-              </div>
+            {isLoading ? (
+              <>
+                <span className="animate-spin">⏳</span>
+                Signing up...
+              </>
+            ) : (
+              <>
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                Sign up
+              </>
             )}
-            <label
-              className="text-white text-[1.1rem] font-medium mb-2 self-start font-sans"
-              htmlFor="name"
-            >
-              Full Name
-            </label>
-            <div className="flex items-center w-full bg-[rgba(255,255,255,0.08)] border-[1.5px] border-white rounded-full mb-6 px-[18px] h-14 max-[600px]:h-11 max-[600px]:px-2">
-              <Input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="John Doe"
-                disabled={isLoading}
-                className="bg-transparent border-none outline-none text-white text-[1.2rem] font-sans p-0 placeholder:text-white placeholder:opacity-80 placeholder:text-[1.1rem] h-full focus-visible:ring-0 focus-visible:border-transparent"
-              />
-            </div>
-            <label
-              className="text-white text-[1.1rem] font-medium mb-2 self-start font-sans"
-              htmlFor="email"
-            >
-              Email Address
-            </label>
-            <div className="flex items-center w-full bg-[rgba(255,255,255,0.08)] border-[1.5px] border-white rounded-full mb-6 px-[18px] h-14 max-[600px]:h-11 max-[600px]:px-2">
-              <MailIcon
-                sx={{ color: grey[100] }}
-                fontSize="medium"
-                className="mr-[10px]"
-              />
-              <Input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                // placeholder="alphabet@gmail.com"
-                autoComplete="email"
-                disabled={isLoading}
-                className="bg-transparent border-none outline-none text-white text-[1.2rem] font-sans p-0 placeholder:text-white placeholder:opacity-80 placeholder:text-[1.1rem] h-full focus-visible:ring-0 focus-visible:border-transparent"
-              />
-            </div>
-            <label
-              className="text-white text-[1.1rem] font-medium mb-2 self-start font-sans"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <div className="flex items-center w-full bg-[rgba(255,255,255,0.08)] border-[1.5px] border-white rounded-full mb-6 px-[18px] h-14 max-[600px]:h-11 max-[600px]:px-2">
-              <PasswordIcon
-                sx={{ color: grey[100] }}
-                fontSize="medium"
-                className="mr-[10px]"
-              />
-              <Input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder=""
-                autoComplete="new-password"
-                disabled={isLoading}
-                className="bg-transparent border-none outline-none text-white text-[1.2rem] font-sans p-0 placeholder:text-white placeholder:opacity-80 placeholder:text-[1.1rem] h-full focus-visible:ring-0 focus-visible:border-transparent"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="bg-[#0a4a6e] text-white rounded-full py-4 w-full max-w-[240px] text-[1.3rem] font-semibold border-none outline-none mt-3 mb-6 cursor-pointer transition-colors duration-200 font-sans hover:bg-[#0077ff] max-[600px]:text-base max-[600px]:py-3 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? "Creating account..." : "Sign up"}
-            </button>
-          </form>
-          <div className="text-white text-[1.1rem] text-left mt-4 max-[900px]:text-center max-[600px]:text-center">
-            Already have an account?{" "}
-            <Link
-              to="/auth/login"
-              className="text-[#b3e0ff] underline font-medium ml-1 hover:text-white"
-            >
-              Sign in
-            </Link>
-          </div>
+          </button>
+
+          <p className="text-[rgba(255,255,255,0.7)] text-sm text-center font-sans">
+            Already have an account? <a href="/auth/login" className="text-[#b3e0ff] hover:text-white">Sign in</a>
+          </p>
         </div>
       </main>
     </div>
