@@ -17,8 +17,6 @@ export function NavigationBar() {
     "text-sm font-normal text-grey-600 hover:text-black transition-colors";
 
   const handleLogout = async () => {
-    // Let oauth2-proxy handle the redirect — do NOT setUser(null) before the
-    // window.location redirect fires or ProtectedRoute will navigate first.
     await logoutOAuth();
   };
 

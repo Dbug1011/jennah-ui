@@ -1,7 +1,4 @@
-/**
- * OAuth2-Proxy Authentication Service
- * Handles user authentication via oauth2-proxy built-in endpoints
- */
+//Handles user authentication via oauth2-proxy built-in endpoints
 
 export interface AuthUser {
   id: string;
@@ -9,16 +6,10 @@ export interface AuthUser {
   name: string;
   provider: string;
 }
-
-/**
- * Get the current authenticated user directly from the proxy
- * oauth2-proxy exposes a /oauth2/userinfo endpoint that returns session details securely
- */
 export async function getCurrentUser(): Promise<AuthUser | null> {
   try {
-    // Ask the proxy directly instead of relying on the backend gateway
     const response = await fetch("/oauth2/userinfo", {
-      credentials: "include", // Important: include cookies for session validation
+      credentials: "include", 
     });
 
     if (!response.ok) {
@@ -27,11 +18,10 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
 
     const data = await response.json();
     
-    // OAuth2 proxy returns { "user": "email@domain.com" } by default
     return {
       id: data.user, 
       email: data.user,
-      name: data.user.split('@')[0], // Creates a clean display name from the email prefix
+      name: data.user.split('@')[0], 
       provider: "github"
     };
   } catch (error) {
