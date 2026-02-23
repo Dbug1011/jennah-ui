@@ -1,4 +1,3 @@
-import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 // COMPONENTS
@@ -14,18 +13,21 @@ import { NavigationBar } from "../components/NavigationBar";
 
 import { ExecutionHistory } from "@/components/ExecutionHistory";
 // import { AccountSection } from "@/components/AccountSection";
-import { getJobs } from "@/data/sampleData";
-import type { Job } from "@/data/sampleData";
 import { useListJobs } from "@/api/hooks/useListJobs";
+import type { Job as BackendJob } from "@/gen/proto/jennah_pb";
 
 
 // INTERFACES
-interface JobWithMetadata extends Job {
+interface JobWithMetadata {
   $typeName: string;
+  jobId: string;
+  id: string;
   tenantId: string;
   imageUri: string;
   workloadName: string;
   projectName: string;
+  status: string;
+  createdAt: string;
 }
 
 interface ExecutionHistoryItem {
@@ -45,64 +47,25 @@ interface ExecutionHistoryItem {
 }
 
 export default function Jobs() {
-  const [jobs, setJobs] = useState<JobWithMetadata[]>([]);
-  const [executionHistory, setExecutionHistory] = useState<
-    ExecutionHistoryItem[]
-  >([]);
-  const location = useLocation();
-  const { fetchJobs } = useListJobs();
+  const [executionHistory] = useState<ExecutionHistoryItem[]>([]);
+  const { fetchJobs, jobs: backendJobs, loading, error } = useListJobs();
+
+  // Map backend jobs to UI format
+  const jobs: JobWithMetadata[] = (backendJobs || []).map((job: any) => ({
+    $typeName: "JobCardJob",
+    jobId: job.jobId,
+    id: job.jobId,
+    tenantId: job.tenantId || "",
+    imageUri: job.imageUri || "",
+    workloadName: job.imageUri || job.jobId, // use imageUri as name
+    projectName: job.tenantId || "",
+    status: job.status || "PENDING",
+    createdAt: job.createdAt || "",
+  }));
 
   useEffect(() => {
     fetchJobs();
-    const allJobs = getJobs();
-    // Convert sample jobs to JobWithMetadata format
-    const formattedJobs: JobWithMetadata[] = allJobs.map(
-      (job) =>
-        ({
-          $typeName: "JobCardJob",
-          jobId: job.jobId,
-          tenantId: "tenant-1",
-          imageUri: job.containerLink,
-          status: job.status as any,
-          createdAt: job.createdAt,
-          workloadName: job.workloadName,
-          projectName: job.projectName,
-          // Store the id for routing
-          id: job.id,
-        }) as any as JobWithMetadata,
-    );
-    setJobs(formattedJobs);
-
-    // Build execution history from sample data
-    const history: ExecutionHistoryItem[] = allJobs.flatMap((job) =>
-      job.executions.map((execution) => ({
-        id: execution.id,
-        status: (execution.status === "RUNNING"
-          ? "Running"
-          : execution.status === "COMPLETED"
-            ? "Completed"
-            : execution.status === "PENDING"
-              ? "Pending"
-              : execution.status === "SCHEDULED"
-                ? "Scheduled"
-                : execution.status === "FAILED"
-                  ? "Failed"
-                  : "Cancelled") as
-          | "Running"
-          | "Completed"
-          | "Failed"
-          | "Pending"
-          | "Scheduled"
-          | "Cancelled",
-        jobName: job.workloadName,
-        jobId: job.id,
-        runId: execution.runId,
-        user: execution.user,
-        duration: execution.duration,
-      })),
-    );
-    setExecutionHistory(history);
-  }, [location.key]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -117,9 +80,32 @@ export default function Jobs() {
           </p>
         </div>
         <SearchBar />
+
+        {loading && (
+          <div className="text-center py-10">
+            <p className="text-gray-500">Loading jobs...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
+            <p className="text-red-600">{error}</p>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-1 gap-8 mb-20">
+          {!loading && jobs.length === 0 && !error && (
+            <div className="col-span-2 text-center py-10">
+              <p className="text-gray-500">No jobs found. Submit your first job to get started!</p>
+            </div>
+          )}
           {jobs.map((job) => (
-            <JobsCard key={job.jobId} job={job as any} />
+            <JobsCard
+              key={job.jobId}
+              job={job as any}
+              onCancelled={() => fetchJobs()}
+              onDeleted={() => fetchJobs()}
+            />
           ))}
         </div>
         <div className="mb-20">

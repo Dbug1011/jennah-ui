@@ -30,14 +30,6 @@ export function NavigationBar() {
           {user ? (
             <>
               <Link
-                to="/projects"
-                className={
-                  pathname.startsWith("/projects") ? boldNav : normalNav
-                }
-              >
-                Projects
-              </Link>
-              <Link
                 to="/jobs"
                 className={pathname.startsWith("/jobs") ? boldNav : normalNav}
               >

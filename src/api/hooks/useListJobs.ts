@@ -12,15 +12,13 @@ export function useListJobs() {
     setError(null);
 
     try {
-      // Create a proper request object
-      const request = {
-        tenantId: "default" // Replace with actual tenant ID from auth context
-      } as ListJobsRequest;
-      
+      // ListJobsRequest is now empty — tenant is resolved server-side via auth headers
+      const request = {} as ListJobsRequest;
+
       // Cast to select the unary overload
       const response = await (client.listJobs as (request: ListJobsRequest) => Promise<ListJobsResponse>)(request);
-      
-      setJobs(response.jobs || []); 
+
+      setJobs(response.jobs || []);
       return response;
     } catch (err: any) {
       setError("Unable to fetch job list. Please check your connection.");

@@ -17,7 +17,13 @@ const transport = createConnectTransport({
   
   interceptors: [
     (next) => async (req) => {
-      req.header.set("X-OAuth-Email", "karis@bisu.edu.ph"); 
+      // In production, oauth2-proxy injects these headers automatically.
+      // These are only used for local development without the proxy running.
+      if (import.meta.env.DEV) {
+        req.header.set("X-OAuth-Email", import.meta.env.VITE_DEV_EMAIL || "dev@example.com");
+        req.header.set("X-OAuth-UserId", import.meta.env.VITE_DEV_USER_ID || "dev-user-123");
+        req.header.set("X-OAuth-Provider", "github");
+      }
       return await next(req);
     }
   ]

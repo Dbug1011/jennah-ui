@@ -5,7 +5,8 @@ import { DurationSelector } from "./DurationSelector";
 import { EnvVariablesTable } from "./EnvVariablesTable";
 import type { EnvVar } from "./EnvVariablesTable";
 import { useState } from "react";
-import { SAMPLE_PROJECTS, createJob } from "@/data/sampleData";
+import { SAMPLE_PROJECTS } from "@/data/sampleData"; // still used for project dropdown until backend supports it
+import { useSubmitJob } from "@/api/hooks/useSubmitJob";
 import { useNavigate } from "react-router-dom";
 import {
   Table,
@@ -56,6 +57,7 @@ const resources = [
 
 export function NewJobForm() {
   const navigate = useNavigate();
+  const { submitJob, loading, error } = useSubmitJob();
   const [jobName, setJobName] = useState("");
   const [containerLink, setContainerLink] = useState("");
   const [selected, setSelected] = useState("medium");
@@ -75,18 +77,28 @@ export function NewJobForm() {
     return resourceMap[selected] || resourceMap["medium"];
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!jobName.trim() || !containerLink.trim() || !project) return;
 
-    createJob(
-      jobName,
-      containerLink,
-      project,
-      getResourceDetails(),
-      duration,
-      envVars,
-    );
-    navigate("/jobs");
+    try {
+      // Build env vars map for the API
+      const envVarsMap: Record<string, string> = {};
+      envVars.forEach((ev) => {
+        if (ev.key) envVarsMap[ev.key] = ev.value;
+      });
+
+      // Call the real Gateway API
+      await submitJob({
+        tenantId: project,
+        imageUri: containerLink,
+        envVars: envVarsMap,
+      } as any);
+
+      navigate("/jobs");
+    } catch (err) {
+      // error is already set by the hook
+      console.error("Failed to submit job:", err);
+    }
   };
 
   return (
@@ -243,14 +255,19 @@ export function NewJobForm() {
       </div>
 
       {/* Submit Section */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
       <div className="flex w-auto pt-4">
         <Button
           onClick={handleSubmit}
-          disabled={!jobName.trim() || !containerLink.trim() || !project}
+          disabled={!jobName.trim() || !containerLink.trim() || !project || loading}
           size="lg"
           className="px-8"
         >
-          Create Workload
+          {loading ? "Submitting..." : "Create Workload"}
         </Button>
       </div>
     </div>

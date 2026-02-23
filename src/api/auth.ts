@@ -34,7 +34,7 @@ export function redirectToOAuthLogin(): void {
 
   const currentPath = window.location.pathname;
   const isAuthPage = currentPath === "/auth/login" || currentPath === "/auth/register" || currentPath === "/";
-  const returnUrl = encodeURIComponent(isAuthPage ? "/projects" : currentPath);
+  const returnUrl = encodeURIComponent(isAuthPage ? "/jobs" : currentPath);
   window.location.href = `/oauth2/sign_in?rd=${returnUrl}`;
 }
 
