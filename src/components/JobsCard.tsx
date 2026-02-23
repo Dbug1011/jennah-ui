@@ -191,10 +191,10 @@ export function JobsCard({ job }: JobsCardProps) {
             View
           </Button>
         </Link>
-        <Button className="flex-1 flex items-center justify-center rounded-xl bg-black hover:bg-gray-900 text-white font-normal transition-colors py-6">
+        {/* <Button className="flex-1 flex items-center justify-center rounded-xl bg-black hover:bg-gray-900 text-white font-normal transition-colors py-6">
           <PlayArrowIcon className="w-4 h-4 mr-2" />
           Run
-        </Button>
+        </Button> */}
       </CardFooter>
     </Card>
   );

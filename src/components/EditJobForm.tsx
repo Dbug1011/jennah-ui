@@ -291,7 +291,7 @@ export function EditJobForm({ job }: EditJobFormProps) {
           Cancel
         </Button>
         <Button onClick={handleSubmit} size="lg" className="px-8">
-          {job ? "Update Workload" : "Create Workload"}
+          {job ? "Update Workload" : "Create Workload and Run"}
         </Button>
       </div>
     </div>
