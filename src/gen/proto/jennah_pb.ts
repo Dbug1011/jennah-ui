@@ -10,17 +10,48 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file proto/jennah.proto.
  */
 export const file_proto_jennah: GenFile = /*@__PURE__*/
-  fileDesc("ChJwcm90by9qZW5uYWgucHJvdG8SCWplbm5haC52MSKkAQoQU3VibWl0Sm9iUmVxdWVzdBIRCgl0ZW5hbnRfaWQYASABKAkSEQoJaW1hZ2VfdXJpGAIgASgJEjoKCGVudl92YXJzGAMgAygLMiguamVubmFoLnYxLlN1Ym1pdEpvYlJlcXVlc3QuRW52VmFyc0VudHJ5Gi4KDEVudlZhcnNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIkwKEVN1Ym1pdEpvYlJlc3BvbnNlEg4KBmpvYl9pZBgBIAEoCRIOCgZzdGF0dXMYAiABKAkSFwoPd29ya2VyX2Fzc2lnbmVkGAMgASgJIiQKD0xpc3RKb2JzUmVxdWVzdBIRCgl0ZW5hbnRfaWQYASABKAkiMAoQTGlzdEpvYnNSZXNwb25zZRIcCgRqb2JzGAEgAygLMg4uamVubmFoLnYxLkpvYiJfCgNKb2ISDgoGam9iX2lkGAEgASgJEhEKCXRlbmFudF9pZBgCIAEoCRIRCglpbWFnZV91cmkYAyABKAkSDgoGc3RhdHVzGAQgASgJEhIKCmNyZWF0ZWRfYXQYBSABKAkyoAEKEURlcGxveW1lbnRTZXJ2aWNlEkYKCVN1Ym1pdEpvYhIbLmplbm5haC52MS5TdWJtaXRKb2JSZXF1ZXN0GhwuamVubmFoLnYxLlN1Ym1pdEpvYlJlc3BvbnNlEkMKCExpc3RKb2JzEhouamVubmFoLnYxLkxpc3RKb2JzUmVxdWVzdBobLmplbm5haC52MS5MaXN0Sm9ic1Jlc3BvbnNlQhtaGWplbm5haC9nZW4vcHJvdG87amVubmFodjFiBnByb3RvMw");
+  fileDesc("ChJwcm90by9qZW5uYWgucHJvdG8SCWplbm5haC52MSJcChBSZXNvdXJjZU92ZXJyaWRlEhIKCmNwdV9taWxsaXMYASABKAMSEgoKbWVtb3J5X21pYhgCIAEoAxIgChhtYXhfcnVuX2R1cmF0aW9uX3NlY29uZHMYAyABKAMi4wEKEFN1Ym1pdEpvYlJlcXVlc3QSEQoJaW1hZ2VfdXJpGAIgASgJEjoKCGVudl92YXJzGAMgAygLMiguamVubmFoLnYxLlN1Ym1pdEpvYlJlcXVlc3QuRW52VmFyc0VudHJ5EhgKEHJlc291cmNlX3Byb2ZpbGUYBCABKAkSNgoRcmVzb3VyY2Vfb3ZlcnJpZGUYBSABKAsyGy5qZW5uYWgudjEuUmVzb3VyY2VPdmVycmlkZRouCgxFbnZWYXJzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASJMChFTdWJtaXRKb2JSZXNwb25zZRIOCgZqb2JfaWQYASABKAkSDgoGc3RhdHVzGAIgASgJEhcKD3dvcmtlcl9hc3NpZ25lZBgDIAEoCSIRCg9MaXN0Sm9ic1JlcXVlc3QiMAoQTGlzdEpvYnNSZXNwb25zZRIcCgRqb2JzGAEgAygLMg4uamVubmFoLnYxLkpvYiJfCgNKb2ISDgoGam9iX2lkGAEgASgJEhEKCXRlbmFudF9pZBgCIAEoCRIRCglpbWFnZV91cmkYAyABKAkSDgoGc3RhdHVzGAQgASgJEhIKCmNyZWF0ZWRfYXQYBSABKAkiGQoXR2V0Q3VycmVudFRlbmFudFJlcXVlc3QibQoYR2V0Q3VycmVudFRlbmFudFJlc3BvbnNlEhEKCXRlbmFudF9pZBgBIAEoCRISCgp1c2VyX2VtYWlsGAIgASgJEhYKDm9hdXRoX3Byb3ZpZGVyGAMgASgJEhIKCmNyZWF0ZWRfYXQYBCABKAkiIgoQQ2FuY2VsSm9iUmVxdWVzdBIOCgZqb2JfaWQYASABKAkiMwoRQ2FuY2VsSm9iUmVzcG9uc2USDgoGam9iX2lkGAEgASgJEg4KBnN0YXR1cxgCIAEoCSIiChBEZWxldGVKb2JSZXF1ZXN0Eg4KBmpvYl9pZBgBIAEoCSI0ChFEZWxldGVKb2JSZXNwb25zZRIOCgZqb2JfaWQYASABKAkSDwoHbWVzc2FnZRgCIAEoCTKNAwoRRGVwbG95bWVudFNlcnZpY2USRgoJU3VibWl0Sm9iEhsuamVubmFoLnYxLlN1Ym1pdEpvYlJlcXVlc3QaHC5qZW5uYWgudjEuU3VibWl0Sm9iUmVzcG9uc2USQwoITGlzdEpvYnMSGi5qZW5uYWgudjEuTGlzdEpvYnNSZXF1ZXN0GhsuamVubmFoLnYxLkxpc3RKb2JzUmVzcG9uc2USWwoQR2V0Q3VycmVudFRlbmFudBIiLmplbm5haC52MS5HZXRDdXJyZW50VGVuYW50UmVxdWVzdBojLmplbm5haC52MS5HZXRDdXJyZW50VGVuYW50UmVzcG9uc2USRgoJQ2FuY2VsSm9iEhsuamVubmFoLnYxLkNhbmNlbEpvYlJlcXVlc3QaHC5qZW5uYWgudjEuQ2FuY2VsSm9iUmVzcG9uc2USRgoJRGVsZXRlSm9iEhsuamVubmFoLnYxLkRlbGV0ZUpvYlJlcXVlc3QaHC5qZW5uYWgudjEuRGVsZXRlSm9iUmVzcG9uc2VCMlowZ2l0aHViLmNvbS9hbHBoYXVzbGFicy9qZW5uYWgvZ2VuL3Byb3RvO2plbm5haHYxYgZwcm90bzM");
+
+/**
+ * ResourceOverride allows callers to specify custom compute resource values.
+ * Any zero-value field is filled in from the resolved preset (or default).
+ *
+ * @generated from message jennah.v1.ResourceOverride
+ */
+export type ResourceOverride = Message<"jennah.v1.ResourceOverride"> & {
+  /**
+   * cpu_millis is CPU in milli-cores (e.g. 1000 = 1 vCPU). 0 means use preset value.
+   *
+   * @generated from field: int64 cpu_millis = 1;
+   */
+  cpuMillis: bigint;
+
+  /**
+   * memory_mib is memory in mebibytes (e.g. 4096 = 4 GiB). 0 means use preset value.
+   *
+   * @generated from field: int64 memory_mib = 2;
+   */
+  memoryMib: bigint;
+
+  /**
+   * max_run_duration_seconds is the job timeout in seconds. 0 means use preset value.
+   *
+   * @generated from field: int64 max_run_duration_seconds = 3;
+   */
+  maxRunDurationSeconds: bigint;
+};
+
+/**
+ * Describes the message jennah.v1.ResourceOverride.
+ * Use `create(ResourceOverrideSchema)` to create a new message.
+ */
+export const ResourceOverrideSchema: GenMessage<ResourceOverride> = /*@__PURE__*/
+  messageDesc(file_proto_jennah, 0);
 
 /**
  * @generated from message jennah.v1.SubmitJobRequest
  */
 export type SubmitJobRequest = Message<"jennah.v1.SubmitJobRequest"> & {
-  /**
-   * @generated from field: string tenant_id = 1;
-   */
-  tenantId: string;
-
   /**
    * @generated from field: string image_uri = 2;
    */
@@ -32,6 +63,22 @@ export type SubmitJobRequest = Message<"jennah.v1.SubmitJobRequest"> & {
    * @generated from field: map<string, string> env_vars = 3;
    */
   envVars: { [key: string]: string };
+
+  /**
+   * resource_profile selects a named preset: "small", "medium", "large", "xlarge".
+   * Defaults to "medium" when empty.
+   *
+   * @generated from field: string resource_profile = 4;
+   */
+  resourceProfile: string;
+
+  /**
+   * resource_override provides inline resource values that take precedence over the preset.
+   * Partial overrides are supported — zero fields fall back to the resolved preset.
+   *
+   * @generated from field: jennah.v1.ResourceOverride resource_override = 5;
+   */
+  resourceOverride?: ResourceOverride;
 };
 
 /**
@@ -39,7 +86,7 @@ export type SubmitJobRequest = Message<"jennah.v1.SubmitJobRequest"> & {
  * Use `create(SubmitJobRequestSchema)` to create a new message.
  */
 export const SubmitJobRequestSchema: GenMessage<SubmitJobRequest> = /*@__PURE__*/
-  messageDesc(file_proto_jennah, 0);
+  messageDesc(file_proto_jennah, 1);
 
 /**
  * @generated from message jennah.v1.SubmitJobResponse
@@ -66,16 +113,12 @@ export type SubmitJobResponse = Message<"jennah.v1.SubmitJobResponse"> & {
  * Use `create(SubmitJobResponseSchema)` to create a new message.
  */
 export const SubmitJobResponseSchema: GenMessage<SubmitJobResponse> = /*@__PURE__*/
-  messageDesc(file_proto_jennah, 1);
+  messageDesc(file_proto_jennah, 2);
 
 /**
  * @generated from message jennah.v1.ListJobsRequest
  */
 export type ListJobsRequest = Message<"jennah.v1.ListJobsRequest"> & {
-  /**
-   * @generated from field: string tenant_id = 1;
-   */
-  tenantId: string;
 };
 
 /**
@@ -83,7 +126,7 @@ export type ListJobsRequest = Message<"jennah.v1.ListJobsRequest"> & {
  * Use `create(ListJobsRequestSchema)` to create a new message.
  */
 export const ListJobsRequestSchema: GenMessage<ListJobsRequest> = /*@__PURE__*/
-  messageDesc(file_proto_jennah, 2);
+  messageDesc(file_proto_jennah, 3);
 
 /**
  * @generated from message jennah.v1.ListJobsResponse
@@ -100,7 +143,7 @@ export type ListJobsResponse = Message<"jennah.v1.ListJobsResponse"> & {
  * Use `create(ListJobsResponseSchema)` to create a new message.
  */
 export const ListJobsResponseSchema: GenMessage<ListJobsResponse> = /*@__PURE__*/
-  messageDesc(file_proto_jennah, 3);
+  messageDesc(file_proto_jennah, 4);
 
 /**
  * @generated from message jennah.v1.Job
@@ -137,13 +180,142 @@ export type Job = Message<"jennah.v1.Job"> & {
  * Use `create(JobSchema)` to create a new message.
  */
 export const JobSchema: GenMessage<Job> = /*@__PURE__*/
-  messageDesc(file_proto_jennah, 4);
+  messageDesc(file_proto_jennah, 5);
 
 /**
+ * @generated from message jennah.v1.GetCurrentTenantRequest
+ */
+export type GetCurrentTenantRequest = Message<"jennah.v1.GetCurrentTenantRequest"> & {
+};
+
+/**
+ * Describes the message jennah.v1.GetCurrentTenantRequest.
+ * Use `create(GetCurrentTenantRequestSchema)` to create a new message.
+ */
+export const GetCurrentTenantRequestSchema: GenMessage<GetCurrentTenantRequest> = /*@__PURE__*/
+  messageDesc(file_proto_jennah, 6);
+
+/**
+ * @generated from message jennah.v1.GetCurrentTenantResponse
+ */
+export type GetCurrentTenantResponse = Message<"jennah.v1.GetCurrentTenantResponse"> & {
+  /**
+   * @generated from field: string tenant_id = 1;
+   */
+  tenantId: string;
+
+  /**
+   * @generated from field: string user_email = 2;
+   */
+  userEmail: string;
+
+  /**
+   * "google", "github"
+   *
+   * @generated from field: string oauth_provider = 3;
+   */
+  oauthProvider: string;
+
+  /**
+   * @generated from field: string created_at = 4;
+   */
+  createdAt: string;
+};
+
+/**
+ * Describes the message jennah.v1.GetCurrentTenantResponse.
+ * Use `create(GetCurrentTenantResponseSchema)` to create a new message.
+ */
+export const GetCurrentTenantResponseSchema: GenMessage<GetCurrentTenantResponse> = /*@__PURE__*/
+  messageDesc(file_proto_jennah, 7);
+
+/**
+ * @generated from message jennah.v1.CancelJobRequest
+ */
+export type CancelJobRequest = Message<"jennah.v1.CancelJobRequest"> & {
+  /**
+   * @generated from field: string job_id = 1;
+   */
+  jobId: string;
+};
+
+/**
+ * Describes the message jennah.v1.CancelJobRequest.
+ * Use `create(CancelJobRequestSchema)` to create a new message.
+ */
+export const CancelJobRequestSchema: GenMessage<CancelJobRequest> = /*@__PURE__*/
+  messageDesc(file_proto_jennah, 8);
+
+/**
+ * @generated from message jennah.v1.CancelJobResponse
+ */
+export type CancelJobResponse = Message<"jennah.v1.CancelJobResponse"> & {
+  /**
+   * @generated from field: string job_id = 1;
+   */
+  jobId: string;
+
+  /**
+   * @generated from field: string status = 2;
+   */
+  status: string;
+};
+
+/**
+ * Describes the message jennah.v1.CancelJobResponse.
+ * Use `create(CancelJobResponseSchema)` to create a new message.
+ */
+export const CancelJobResponseSchema: GenMessage<CancelJobResponse> = /*@__PURE__*/
+  messageDesc(file_proto_jennah, 9);
+
+/**
+ * @generated from message jennah.v1.DeleteJobRequest
+ */
+export type DeleteJobRequest = Message<"jennah.v1.DeleteJobRequest"> & {
+  /**
+   * @generated from field: string job_id = 1;
+   */
+  jobId: string;
+};
+
+/**
+ * Describes the message jennah.v1.DeleteJobRequest.
+ * Use `create(DeleteJobRequestSchema)` to create a new message.
+ */
+export const DeleteJobRequestSchema: GenMessage<DeleteJobRequest> = /*@__PURE__*/
+  messageDesc(file_proto_jennah, 10);
+
+/**
+ * @generated from message jennah.v1.DeleteJobResponse
+ */
+export type DeleteJobResponse = Message<"jennah.v1.DeleteJobResponse"> & {
+  /**
+   * @generated from field: string job_id = 1;
+   */
+  jobId: string;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message jennah.v1.DeleteJobResponse.
+ * Use `create(DeleteJobResponseSchema)` to create a new message.
+ */
+export const DeleteJobResponseSchema: GenMessage<DeleteJobResponse> = /*@__PURE__*/
+  messageDesc(file_proto_jennah, 11);
+
+/**
+ * Main service definition for Jennah.
+ *
  * @generated from service jennah.v1.DeploymentService
  */
 export const DeploymentService: GenService<{
   /**
+   * Submit a job for deployment.
+   *
    * @generated from rpc jennah.v1.DeploymentService.SubmitJob
    */
   submitJob: {
@@ -152,12 +324,44 @@ export const DeploymentService: GenService<{
     output: typeof SubmitJobResponseSchema;
   },
   /**
+   * List all jobs for the current tenant.
+   *
    * @generated from rpc jennah.v1.DeploymentService.ListJobs
    */
   listJobs: {
     methodKind: "unary";
     input: typeof ListJobsRequestSchema;
     output: typeof ListJobsResponseSchema;
+  },
+  /**
+   * Get the current tenant's information.
+   *
+   * @generated from rpc jennah.v1.DeploymentService.GetCurrentTenant
+   */
+  getCurrentTenant: {
+    methodKind: "unary";
+    input: typeof GetCurrentTenantRequestSchema;
+    output: typeof GetCurrentTenantResponseSchema;
+  },
+  /**
+   * Cancel a job (only for PENDING, SCHEDULED, or RUNNING states).
+   *
+   * @generated from rpc jennah.v1.DeploymentService.CancelJob
+   */
+  cancelJob: {
+    methodKind: "unary";
+    input: typeof CancelJobRequestSchema;
+    output: typeof CancelJobResponseSchema;
+  },
+  /**
+   * Delete a job from the system.
+   *
+   * @generated from rpc jennah.v1.DeploymentService.DeleteJob
+   */
+  deleteJob: {
+    methodKind: "unary";
+    input: typeof DeleteJobRequestSchema;
+    output: typeof DeleteJobResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_proto_jennah, 0);

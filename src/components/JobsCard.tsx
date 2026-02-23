@@ -3,6 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
+import StopIcon from "@mui/icons-material/Stop";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Button } from "@/components/ui/button";
 import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
@@ -12,6 +14,8 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import type { Job } from "@/gen/proto/jennah_pb";
+import { useCancelJob } from "@/api/hooks/useCancelJob";
+import { useDeleteJob } from "@/api/hooks/useDeleteJob";
 
 interface JobCardJob extends Job {
   id: any;
@@ -89,7 +93,7 @@ function getStatusInfo(status: string): {
   return statusMap[status] || statusMap.PENDING;
 }
 
-export function JobsCard({ job }: JobsCardProps) {
+export function JobsCard({ job, onCancelled, onDeleted }: JobsCardProps & { onCancelled?: (jobId: string) => void; onDeleted?: (jobId: string) => void }) {
   const [relativeTime, setRelativeTime] = useState("");
   const { name, fullPath } = useMemo(
     () => parseImageUri(job.imageUri),
@@ -99,9 +103,13 @@ export function JobsCard({ job }: JobsCardProps) {
   const shortJobId = useMemo(() => shortenJobId(job.jobId), [job.jobId]);
   const location = useLocation();
   const showProject = location.pathname.includes("projects/view");
+  const { cancelJob, loading: cancelling } = useCancelJob();
+  const { deleteJob, loading: deleting } = useDeleteJob();
+
+  // Cancel-able statuses only
+  const canCancel = ["PENDING", "SCHEDULED", "RUNNING"].includes(job.status);
 
   useEffect(() => {
-    // Update relative time whenever job data changes
     setRelativeTime(formatRelativeTime(job.createdAt));
   }, [job.createdAt]);
 
@@ -109,13 +117,35 @@ export function JobsCard({ job }: JobsCardProps) {
     navigator.clipboard.writeText(job.jobId);
   };
 
+  const handleCancel = async () => {
+    if (!canCancel) return;
+    try {
+      await cancelJob(job.jobId);
+      // Data still persists in DB — just stops the running instance
+      onCancelled?.(job.jobId);
+    } catch (err) {
+      console.error("Cancel failed:", err);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm(`Delete job ${shortJobId}? This will cancel it on GCP Batch and remove it from the database.`)) return;
+    try {
+      await deleteJob(job.jobId);
+      // Removed from GCP Batch and database
+      onDeleted?.(job.jobId);
+    } catch (err) {
+      console.error("Delete failed:", err);
+    }
+  };
+
   return (
     <Card className="w-full hover:shadow-md transition-all duration-300 border border-gray-100 bg-white overflow-hidden rounded-2xl">
       <CardHeader className="pt-8 pb-4 px-8">
-        {/* Workload Name */}
+        {/* Workload Name — falls back to image name until backend adds name field */}
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-black">
-            {job.workloadName}
+            {job.workloadName || name}
           </h3>
         </div>
 
@@ -178,7 +208,8 @@ export function JobsCard({ job }: JobsCardProps) {
         </div>
       </CardHeader>
 
-      <CardFooter className="flex gap-3 bg-white p-8 w-full border-t border-gray-100">
+      <CardFooter className="flex gap-2 bg-white p-8 w-full border-t border-gray-100">
+        {/* View button */}
         <Link
           to={`/jobs/${job.id}`}
           className="flex-1 flex py-2 items-center justify-center rounded-xl bg-gray-100 border-0 hover:bg-gray-200 transition-colors"
@@ -191,10 +222,30 @@ export function JobsCard({ job }: JobsCardProps) {
             View
           </Button>
         </Link>
-        {/* <Button className="flex-1 flex items-center justify-center rounded-xl bg-black hover:bg-gray-900 text-white font-normal transition-colors py-6">
-          <PlayArrowIcon className="w-4 h-4 mr-2" />
-          Run
-        </Button> */}
+
+        {/* Cancel button — stops running instance, data persists in DB */}
+        <Button
+          onClick={handleCancel}
+          disabled={!canCancel || cancelling}
+          title={canCancel ? "Stop running instance (data stays in DB)" : "Job cannot be cancelled in current state"}
+          size="sm"
+          className="bg-transparent text-black font-normal hover:bg-transparent"
+        >
+          <StopIcon className="w-4 h-4 mr-2" />
+          {cancelling ? "Stopping..." : "Cancel"}
+        </Button>
+
+        {/* Delete button — cancels on GCP Batch AND removes from database */}
+        <Button
+          onClick={handleDelete}
+          disabled={deleting}
+          title="Delete job from GCP Batch and database permanently"
+          size="sm"
+          className="bg-transparent text-black font-normal hover:bg-transparent"
+        >
+          <DeleteOutlineIcon className="w-4 h-4 mr-2" />
+          {deleting ? "Deleting..." : "Delete"}
+        </Button>
       </CardFooter>
     </Card>
   );

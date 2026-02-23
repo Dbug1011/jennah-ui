@@ -3,16 +3,20 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ListJobsRequest, ListJobsResponse, SubmitJobRequest, SubmitJobResponse } from "./jennah_pb.js";
+import { CancelJobRequest, CancelJobResponse, DeleteJobRequest, DeleteJobResponse, GetCurrentTenantRequest, GetCurrentTenantResponse, ListJobsRequest, ListJobsResponse, SubmitJobRequest, SubmitJobResponse } from "./jennah_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
+ * Main service definition for Jennah.
+ *
  * @generated from service jennah.v1.DeploymentService
  */
 export const DeploymentService = {
   typeName: "jennah.v1.DeploymentService",
   methods: {
     /**
+     * Submit a job for deployment.
+     *
      * @generated from rpc jennah.v1.DeploymentService.SubmitJob
      */
     submitJob: {
@@ -22,12 +26,47 @@ export const DeploymentService = {
       kind: MethodKind.Unary,
     },
     /**
+     * List all jobs for the current tenant.
+     *
      * @generated from rpc jennah.v1.DeploymentService.ListJobs
      */
     listJobs: {
       name: "ListJobs",
       I: ListJobsRequest,
       O: ListJobsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Get the current tenant's information.
+     *
+     * @generated from rpc jennah.v1.DeploymentService.GetCurrentTenant
+     */
+    getCurrentTenant: {
+      name: "GetCurrentTenant",
+      I: GetCurrentTenantRequest,
+      O: GetCurrentTenantResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Cancel a job (only for PENDING, SCHEDULED, or RUNNING states).
+     *
+     * @generated from rpc jennah.v1.DeploymentService.CancelJob
+     */
+    cancelJob: {
+      name: "CancelJob",
+      I: CancelJobRequest,
+      O: CancelJobResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Delete a job from the system.
+     *
+     * @generated from rpc jennah.v1.DeploymentService.DeleteJob
+     */
+    deleteJob: {
+      name: "DeleteJob",
+      I: DeleteJobRequest,
+      O: DeleteJobResponse,
       kind: MethodKind.Unary,
     },
   }

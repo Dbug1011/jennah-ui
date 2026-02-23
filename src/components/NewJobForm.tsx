@@ -5,7 +5,7 @@ import { DurationSelector } from "./DurationSelector";
 import { EnvVariablesTable } from "./EnvVariablesTable";
 import type { EnvVar } from "./EnvVariablesTable";
 import { useState } from "react";
-import { SAMPLE_PROJECTS, createJob } from "@/data/sampleData";
+import { useSubmitJob } from "@/api/hooks/useSubmitJob";
 import { useNavigate } from "react-router-dom";
 import {
   Table,
@@ -15,13 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const resources = [
   {
@@ -56,11 +49,11 @@ const resources = [
 
 export function NewJobForm() {
   const navigate = useNavigate();
+  const { submitJob, loading, error } = useSubmitJob();
   const [jobName, setJobName] = useState("");
   const [containerLink, setContainerLink] = useState("");
   const [selected, setSelected] = useState("medium");
   const [duration, setDuration] = useState(0);
-  const [project, setProject] = useState(SAMPLE_PROJECTS[0]?.name || "");
   const [envVars, setEnvVars] = useState<EnvVar[]>([]);
 
   const getResourceDetails = () => {
@@ -75,18 +68,27 @@ export function NewJobForm() {
     return resourceMap[selected] || resourceMap["medium"];
   };
 
-  const handleSubmit = () => {
-    if (!jobName.trim() || !containerLink.trim() || !project) return;
+  const handleSubmit = async () => {
+    if (!jobName.trim() || !containerLink.trim()) return;
 
-    createJob(
-      jobName,
-      containerLink,
-      project,
-      getResourceDetails(),
-      duration,
-      envVars,
-    );
-    navigate("/jobs");
+    try {
+      // Build env vars map for the API
+      const envVarsMap: Record<string, string> = {};
+      envVars.forEach((ev) => {
+        if (ev.key) envVarsMap[ev.key] = ev.value;
+      });
+
+      // tenantId resolved server-side via auth headers
+      await submitJob({
+        imageUri: containerLink,
+        resourceProfile: selected,
+        envVars: envVarsMap,
+      } as any);
+
+      navigate("/jobs");
+    } catch (err) {
+      console.error("Failed to submit job:", err);
+    }
   };
 
   return (
@@ -137,29 +139,7 @@ export function NewJobForm() {
             </p>
           </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="project-select" className="text-sm font-medium">
-              Project Directory
-            </Label>
-            <Select value={project} onValueChange={setProject}>
-              <SelectTrigger
-                id="project-select"
-                className="w-full bg-background"
-              >
-                <SelectValue placeholder="Select a project" />
-              </SelectTrigger>
-              <SelectContent>
-                {SAMPLE_PROJECTS.map((proj) => (
-                  <SelectItem key={proj.id} value={proj.name}>
-                    {proj.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <p className="text-xs text-muted-foreground">
-              Select the project directory for this job.
-            </p>
-          </div>
+
         </div>
       </div>
 
@@ -243,14 +223,19 @@ export function NewJobForm() {
       </div>
 
       {/* Submit Section */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
       <div className="flex w-auto pt-4">
         <Button
           onClick={handleSubmit}
-          disabled={!jobName.trim() || !containerLink.trim() || !project}
+          disabled={!jobName.trim() || !containerLink.trim() || loading}
           size="lg"
           className="px-8"
         >
-          Create Workload and Run
+          {loading ? "Submitting..." : "Create Workload"} and Run
         </Button>
       </div>
     </div>
