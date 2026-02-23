@@ -7,9 +7,20 @@ export interface AuthUser {
   provider: string;
 }
 export async function getCurrentUser(): Promise<AuthUser | null> {
+  // In local dev, oauth2-proxy isn't running — use env var mock user instead
+  if (import.meta.env.DEV) {
+    const email = import.meta.env.VITE_DEV_EMAIL || "dev@example.com";
+    return {
+      id: import.meta.env.VITE_DEV_USER_ID || "dev-user-123",
+      email,
+      name: email.split("@")[0],
+      provider: "github",
+    };
+  }
+
   try {
     const response = await fetch("/oauth2/userinfo", {
-      credentials: "include", 
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -17,12 +28,12 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     }
 
     const data = await response.json();
-    
+
     return {
-      id: data.user, 
+      id: data.user,
       email: data.user,
-      name: data.user.split('@')[0], 
-      provider: "github"
+      name: data.user.split("@")[0],
+      provider: "github",
     };
   } catch (error) {
     console.error("Failed to get current user:", error);

@@ -5,7 +5,6 @@ import { DurationSelector } from "./DurationSelector";
 import { EnvVariablesTable } from "./EnvVariablesTable";
 import type { EnvVar } from "./EnvVariablesTable";
 import { useState } from "react";
-import { SAMPLE_PROJECTS } from "@/data/sampleData"; // still used for project dropdown until backend supports it
 import { useSubmitJob } from "@/api/hooks/useSubmitJob";
 import { useNavigate } from "react-router-dom";
 import {
@@ -16,13 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const resources = [
   {
@@ -62,7 +54,6 @@ export function NewJobForm() {
   const [containerLink, setContainerLink] = useState("");
   const [selected, setSelected] = useState("medium");
   const [duration, setDuration] = useState(0);
-  const [project, setProject] = useState(SAMPLE_PROJECTS[0]?.name || "");
   const [envVars, setEnvVars] = useState<EnvVar[]>([]);
 
   const getResourceDetails = () => {
@@ -78,7 +69,7 @@ export function NewJobForm() {
   };
 
   const handleSubmit = async () => {
-    if (!jobName.trim() || !containerLink.trim() || !project) return;
+    if (!jobName.trim() || !containerLink.trim()) return;
 
     try {
       // Build env vars map for the API
@@ -87,16 +78,15 @@ export function NewJobForm() {
         if (ev.key) envVarsMap[ev.key] = ev.value;
       });
 
-      // Call the real Gateway API
+      // tenantId resolved server-side via auth headers
       await submitJob({
-        tenantId: project,
         imageUri: containerLink,
+        resourceProfile: selected,
         envVars: envVarsMap,
       } as any);
 
       navigate("/jobs");
     } catch (err) {
-      // error is already set by the hook
       console.error("Failed to submit job:", err);
     }
   };
@@ -149,29 +139,7 @@ export function NewJobForm() {
             </p>
           </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="project-select" className="text-sm font-medium">
-              Project Directory
-            </Label>
-            <Select value={project} onValueChange={setProject}>
-              <SelectTrigger
-                id="project-select"
-                className="w-full bg-background"
-              >
-                <SelectValue placeholder="Select a project" />
-              </SelectTrigger>
-              <SelectContent>
-                {SAMPLE_PROJECTS.map((proj) => (
-                  <SelectItem key={proj.id} value={proj.name}>
-                    {proj.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <p className="text-xs text-muted-foreground">
-              Select the project directory for this job.
-            </p>
-          </div>
+
         </div>
       </div>
 
@@ -263,7 +231,7 @@ export function NewJobForm() {
       <div className="flex w-auto pt-4">
         <Button
           onClick={handleSubmit}
-          disabled={!jobName.trim() || !containerLink.trim() || !project || loading}
+          disabled={!jobName.trim() || !containerLink.trim() || loading}
           size="lg"
           className="px-8"
         >
