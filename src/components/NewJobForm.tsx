@@ -267,7 +267,7 @@ export function NewJobForm() {
           size="lg"
           className="px-8"
         >
-          {loading ? "Submitting..." : "Create Workload"}
+          {loading ? "Submitting..." : "Create Workload"} and Run
         </Button>
       </div>
     </div>

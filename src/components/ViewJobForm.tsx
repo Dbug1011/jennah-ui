@@ -258,12 +258,12 @@ export function ViewJobForm({
             Cancel
           </Button>
         )}
-        <Button size="lg" variant="outline" className="px-8" asChild>
+        {/* <Button size="lg" variant="outline" className="px-8" asChild>
           <Link to={`/jobs/${jobId}/edit`}>Edit</Link>
-        </Button>
-        <Button size="lg" className="px-8">
+        </Button> */}
+        {/* <Button size="lg" className="px-8">
           Run Job
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

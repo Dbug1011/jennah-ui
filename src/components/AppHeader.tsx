@@ -1,8 +1,8 @@
-import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import Logo from '../assets/images/Logo.png';
+import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import Logo from "../assets/images/Logo.png";
 // import MenuIcon from '../assets/icons/menu.png';
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
 export default function AppHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
@@ -10,15 +10,37 @@ export default function AppHeader() {
   return (
     <header className="w-full flex items-center justify-between px-[60px] pt-10 bg-transparent relative z-[2]">
       <div className="flex items-center gap-3">
-        <a href="/"><img src={Logo} alt="Jennah Logo" className="h-[38px] w-auto block" /></a>
+        <a href="/">
+          <img src={Logo} alt="Jennah Logo" className="h-[38px] w-auto block" />
+        </a>
       </div>
       <nav className="flex gap-10 max-[900px]:hidden">
-        <Link to="/" className="text-white text-[1.1rem] no-underline font-medium transition-colors duration-200 hover:text-[#b3e0ff] font-sans">Home</Link>
-        <a href="#features" className="text-white text-[1.1rem] no-underline font-medium transition-colors duration-200 hover:text-[#b3e0ff] font-sans">Features</a>
-        <a href="#pricing" className="text-white text-[1.1rem] no-underline font-medium transition-colors duration-200 hover:text-[#b3e0ff] font-sans">Pricing</a>
-        <a href="#contact" className="text-white text-[1.1rem] no-underline font-medium transition-colors duration-200 hover:text-[#b3e0ff] font-sans">Contact</a>
+        <Link
+          to="/"
+          className="text-white text-[1.1rem] no-underline font-medium transition-colors duration-200 hover:text-[#b3e0ff] font-sans"
+        >
+          Home
+        </Link>
+        <a
+          href="#features"
+          className="text-white text-[1.1rem] no-underline font-medium transition-colors duration-200 hover:text-[#b3e0ff] font-sans"
+        >
+          Features
+        </a>
+        <a
+          href="#pricing"
+          className="text-white text-[1.1rem] no-underline font-medium transition-colors duration-200 hover:text-[#b3e0ff] font-sans"
+        >
+          Pricing
+        </a>
+        <a
+          href="#contact"
+          className="text-white text-[1.1rem] no-underline font-medium transition-colors duration-200 hover:text-[#b3e0ff] font-sans"
+        >
+          Contact
+        </a>
       </nav>
-      {location.pathname === '/auth/login' ? (
+      {/* {location.pathname === '/auth/login' ? (
         <Link to="/auth/register" className="bg-white text-[#1a2a3a] rounded-full px-8 py-[10px] text-[1.1rem] font-semibold no-underline border-none outline-none transition-all duration-200 shadow-[0_2px_12px_rgba(0,0,0,0.08)] font-sans cursor-pointer z-[2] hover:bg-[#e6f2ff] hover:text-[#0077ff] max-[900px]:hidden">Sign Up</Link>
       ) : (
         <Link to="/auth/login" className="bg-white text-[#1a2a3a] rounded-full px-8 py-[10px] text-[1.1rem] font-semibold no-underline border-none outline-none transition-all duration-200 shadow-[0_2px_12px_rgba(0,0,0,0.08)] font-sans cursor-pointer z-[2] hover:bg-[#e6f2ff] hover:text-[#0077ff] max-[900px]:hidden">Login</Link>
@@ -41,7 +63,7 @@ export default function AppHeader() {
             )}
           </div>
         </div>
-      )}
+      )} */}
     </header>
   );
 }
