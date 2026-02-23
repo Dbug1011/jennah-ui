@@ -250,7 +250,7 @@ export function NewJobForm() {
           size="lg"
           className="px-8"
         >
-          Create Workload
+          Create Workload and Run
         </Button>
       </div>
     </div>
