@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CancelJobRequest, CancelJobResponse, DeleteJobRequest, DeleteJobResponse, GetCurrentTenantRequest, GetCurrentTenantResponse, ListJobsRequest, ListJobsResponse, SubmitJobRequest, SubmitJobResponse } from "./jennah_pb.js";
+import { CancelJobRequest, CancelJobResponse, DeleteJobRequest, DeleteJobResponse, GetCurrentTenantRequest, GetCurrentTenantResponse, GetJobRequest, GetJobResponse, ListJobsRequest, ListJobsResponse, SubmitJobRequest, SubmitJobResponse } from "./jennah_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -67,6 +67,17 @@ export const DeploymentService = {
       name: "DeleteJob",
       I: DeleteJobRequest,
       O: DeleteJobResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Get a single job's full details.
+     *
+     * @generated from rpc jennah.v1.DeploymentService.GetJob
+     */
+    getJob: {
+      name: "GetJob",
+      I: GetJobRequest,
+      O: GetJobResponse,
       kind: MethodKind.Unary,
     },
   }

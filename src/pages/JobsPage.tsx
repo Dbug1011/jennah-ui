@@ -14,6 +14,7 @@ import { NavigationBar } from "../components/NavigationBar";
 import { ExecutionHistory } from "@/components/ExecutionHistory";
 // import { AccountSection } from "@/components/AccountSection";
 import { useListJobs } from "@/api/hooks/useListJobs";
+import { useGetCurrentTenant } from "@/api/hooks/useGetCurrentTenant";
 import type { Job as BackendJob } from "@/gen/proto/jennah_pb";
 import type { FilterOptions } from "@/components/FilterPopover";
 
@@ -54,9 +55,20 @@ export default function Jobs() {
     projectNames: [],
   });
   const { fetchJobs, jobs: backendJobs, loading, error } = useListJobs();
+  const { getCurrentTenant, tenant } = useGetCurrentTenant();
+
+  useEffect(() => {
+    getCurrentTenant();
+    fetchJobs();
+  }, []);
+
+  // Filter to only show jobs belonging to the current tenant (client-side safety net)
+  const filteredJobs = tenant
+    ? (backendJobs || []).filter((j: any) => j.tenantId === tenant.tenantId)
+    : (backendJobs || []);
 
   // Map backend jobs to UI format
-  const jobs: JobWithMetadata[] = (backendJobs || []).map((job: any) => ({
+  const jobs: JobWithMetadata[] = filteredJobs.map((job: any) => ({
     $typeName: "JobCardJob",
     jobId: job.jobId,
     id: job.jobId,

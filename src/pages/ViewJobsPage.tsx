@@ -1,34 +1,39 @@
 import { NavigationBar } from "@/components/NavigationBar";
-// import { AccountSection } from "@/components/AccountSection";
 import { ViewJobForm } from "@/components/ViewJobForm";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getJobById } from "@/data/sampleData";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import type { Job } from "@/data/sampleData";
+import { useGetJob } from "@/api/hooks/useGetJob";
 
 export default function ViewJob() {
   const { jobId } = useParams<{ jobId: string }>();
-  const [job, setJob] = useState<Job | undefined>(undefined);
+  const { fetchJob, job, loading, error } = useGetJob();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("ViewJobsPage: Fetching job with ID:", jobId);
-    const fetchedJob = getJobById(jobId || "");
-    console.log("ViewJobsPage: Fetched job:", fetchedJob);
-    setJob(fetchedJob);
+    if (jobId) fetchJob(jobId);
   }, [jobId]);
 
-  const handleBack = () => {
-    navigate(-1);
-  };
+  const handleBack = () => navigate(-1);
 
-  if (!job) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
         <NavigationBar />
         <main className="px-8 md:px-40 py-20 grow">
-          <h1 className="text-3xl font-semibold text-black">Job not found</h1>
+          <p className="text-gray-500">Loading job...</p>
+        </main>
+      </div>
+    );
+  }
+
+  if (error || (!loading && !job)) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col">
+        <NavigationBar />
+        <main className="px-8 md:px-40 py-20 grow">
+          <h1 className="text-3xl font-semibold text-black mb-4">Job not found</h1>
+          <p className="text-gray-500 mb-6">No job with ID <code className="font-mono bg-gray-100 px-1 rounded">{jobId}</code> was found.</p>
           <Link to="/jobs">
             <Button>Back to Jobs</Button>
           </Link>
@@ -43,7 +48,7 @@ export default function ViewJob() {
       <main className="px-8 md:px-40 py-20 grow">
         <div className="mb-20">
           <h1 className="text-5xl md:text-6xl font-semibold text-black mb-4 leading-tight">
-            {job.workloadName}
+            {job!.name || job!.imageUri.split("/").pop()}
           </h1>
           <p className="text-xl text-gray-600 font-light">
             View and manage your job configuration
@@ -52,14 +57,26 @@ export default function ViewJob() {
         <div className="mb-20">
           <ViewJobForm
             jobId={jobId}
-            jobName={job.workloadName}
-            jobID={job.jobId}
-            containerLink={job.containerLink}
-            projectDirectory={job.projectName}
-            selectedResource={job.resources}
-            duration={job.duration}
-            envVars={job.envVars}
-            status={job.status}
+            jobName={job!.name || job!.imageUri.split("/").pop()}
+            jobID={job!.jobId}
+            containerLink={job!.imageUri}
+            projectDirectory={job!.tenantId}
+            status={job!.status as any}
+            createdAt={job!.createdAt}
+            selectedResource={
+              job!.machineType
+                ? { name: job!.machineType, vcpu: 0, ram: job!.resourceProfile }
+                : undefined
+            }
+            duration={0}
+            envVars={(() => {
+              try {
+                const parsed = JSON.parse(job!.envVarsJson || "{}");
+                return Object.entries(parsed).map(([key, value], i) => ({ id: String(i), key, value: String(value) }));
+              } catch {
+                return [];
+              }
+            })()}
             onBack={handleBack}
           />
         </div>
