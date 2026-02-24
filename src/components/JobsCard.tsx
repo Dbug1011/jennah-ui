@@ -181,6 +181,16 @@ export function JobsCard({ job, onCancelled, onDeleted }: JobsCardProps & { onCa
             </Popover>
           </div>
 
+          {/* GCP Batch ID — the name as it appears in the Google Cloud Console */}
+          {job.name && (
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <span className="text-sm text-gray-600">GCP Batch ID</span>
+              <span className="text-sm font-semibold text-black font-mono">
+                {job.name}-{job.jobId.substring(0, 8)}
+              </span>
+            </div>
+          )}
+
           {/* Job ID */}
           <div className="flex items-center justify-between pb-4 border-b border-gray-100">
             <span className="text-sm text-gray-600">Job ID</span>
@@ -211,7 +221,7 @@ export function JobsCard({ job, onCancelled, onDeleted }: JobsCardProps & { onCa
       <CardFooter className="flex gap-2 bg-white p-8 w-full border-t border-gray-100">
         {/* View button */}
         <Link
-          to={`/jobs/${job.id}`}
+          to={`/jobs/${job.jobId}`}
           className="flex-1 flex py-2 items-center justify-center rounded-xl bg-gray-100 border-0 hover:bg-gray-200 transition-colors"
         >
           <Button

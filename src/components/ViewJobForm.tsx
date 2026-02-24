@@ -24,6 +24,7 @@ interface ViewJobFormProps {
   jobID?: string;
   containerLink?: string;
   projectDirectory?: string;
+  createdAt?: string;
   selectedResource?: {
     name: string;
     vcpu: number;
@@ -76,6 +77,7 @@ export function ViewJobForm({
   jobID,
   containerLink,
   projectDirectory,
+  createdAt,
   selectedResource,
   duration,
   envVars,
@@ -85,7 +87,6 @@ export function ViewJobForm({
   const finalJobName = jobName;
   const finalJobID = jobID;
   const finalContainerLink = containerLink;
-  const finalProjectDirectory = projectDirectory;
   const finalSelectedResource = selectedResource;
   const finalDuration = duration;
   const finalEnvVars = envVars;
@@ -146,13 +147,19 @@ export function ViewJobForm({
               {finalContainerLink}
             </p>
           </div>
-          <div className="h-px bg-border" />
-          <div className="grid gap-2">
-            <span className="text-xs font-medium text-muted-foreground uppercase">
-              Project Directory
-            </span>
-            <p className="text-base font-medium">{finalProjectDirectory}</p>
-          </div>
+          {createdAt && (
+            <>
+              <div className="h-px bg-border" />
+              <div className="grid gap-2">
+                <span className="text-xs font-medium text-muted-foreground uppercase">
+                  Created At
+                </span>
+                <p className="text-base font-medium">
+                  {new Date(createdAt).toLocaleString()}
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </div>
 

@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file proto/jennah.proto.
  */
 export const file_proto_jennah: GenFile = /*@__PURE__*/
-  fileDesc("ChJwcm90by9qZW5uYWgucHJvdG8SCWplbm5haC52MSJcChBSZXNvdXJjZU92ZXJyaWRlEhIKCmNwdV9taWxsaXMYASABKAMSEgoKbWVtb3J5X21pYhgCIAEoAxIgChhtYXhfcnVuX2R1cmF0aW9uX3NlY29uZHMYAyABKAMi4wEKEFN1Ym1pdEpvYlJlcXVlc3QSEQoJaW1hZ2VfdXJpGAIgASgJEjoKCGVudl92YXJzGAMgAygLMiguamVubmFoLnYxLlN1Ym1pdEpvYlJlcXVlc3QuRW52VmFyc0VudHJ5EhgKEHJlc291cmNlX3Byb2ZpbGUYBCABKAkSNgoRcmVzb3VyY2Vfb3ZlcnJpZGUYBSABKAsyGy5qZW5uYWgudjEuUmVzb3VyY2VPdmVycmlkZRouCgxFbnZWYXJzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASJMChFTdWJtaXRKb2JSZXNwb25zZRIOCgZqb2JfaWQYASABKAkSDgoGc3RhdHVzGAIgASgJEhcKD3dvcmtlcl9hc3NpZ25lZBgDIAEoCSIRCg9MaXN0Sm9ic1JlcXVlc3QiMAoQTGlzdEpvYnNSZXNwb25zZRIcCgRqb2JzGAEgAygLMg4uamVubmFoLnYxLkpvYiJfCgNKb2ISDgoGam9iX2lkGAEgASgJEhEKCXRlbmFudF9pZBgCIAEoCRIRCglpbWFnZV91cmkYAyABKAkSDgoGc3RhdHVzGAQgASgJEhIKCmNyZWF0ZWRfYXQYBSABKAkiGQoXR2V0Q3VycmVudFRlbmFudFJlcXVlc3QibQoYR2V0Q3VycmVudFRlbmFudFJlc3BvbnNlEhEKCXRlbmFudF9pZBgBIAEoCRISCgp1c2VyX2VtYWlsGAIgASgJEhYKDm9hdXRoX3Byb3ZpZGVyGAMgASgJEhIKCmNyZWF0ZWRfYXQYBCABKAkiIgoQQ2FuY2VsSm9iUmVxdWVzdBIOCgZqb2JfaWQYASABKAkiMwoRQ2FuY2VsSm9iUmVzcG9uc2USDgoGam9iX2lkGAEgASgJEg4KBnN0YXR1cxgCIAEoCSIiChBEZWxldGVKb2JSZXF1ZXN0Eg4KBmpvYl9pZBgBIAEoCSI0ChFEZWxldGVKb2JSZXNwb25zZRIOCgZqb2JfaWQYASABKAkSDwoHbWVzc2FnZRgCIAEoCTKNAwoRRGVwbG95bWVudFNlcnZpY2USRgoJU3VibWl0Sm9iEhsuamVubmFoLnYxLlN1Ym1pdEpvYlJlcXVlc3QaHC5qZW5uYWgudjEuU3VibWl0Sm9iUmVzcG9uc2USQwoITGlzdEpvYnMSGi5qZW5uYWgudjEuTGlzdEpvYnNSZXF1ZXN0GhsuamVubmFoLnYxLkxpc3RKb2JzUmVzcG9uc2USWwoQR2V0Q3VycmVudFRlbmFudBIiLmplbm5haC52MS5HZXRDdXJyZW50VGVuYW50UmVxdWVzdBojLmplbm5haC52MS5HZXRDdXJyZW50VGVuYW50UmVzcG9uc2USRgoJQ2FuY2VsSm9iEhsuamVubmFoLnYxLkNhbmNlbEpvYlJlcXVlc3QaHC5qZW5uYWgudjEuQ2FuY2VsSm9iUmVzcG9uc2USRgoJRGVsZXRlSm9iEhsuamVubmFoLnYxLkRlbGV0ZUpvYlJlcXVlc3QaHC5qZW5uYWgudjEuRGVsZXRlSm9iUmVzcG9uc2VCMlowZ2l0aHViLmNvbS9hbHBoYXVzbGFicy9qZW5uYWgvZ2VuL3Byb3RvO2plbm5haHYxYgZwcm90bzM");
+  fileDesc("ChJwcm90by9qZW5uYWgucHJvdG8SCWplbm5haC52MSJcChBSZXNvdXJjZU92ZXJyaWRlEhIKCmNwdV9taWxsaXMYASABKAMSEgoKbWVtb3J5X21pYhgCIAEoAxIgChhtYXhfcnVuX2R1cmF0aW9uX3NlY29uZHMYAyABKAMi4wIKEFN1Ym1pdEpvYlJlcXVlc3QSEQoJaW1hZ2VfdXJpGAIgASgJEjoKCGVudl92YXJzGAMgAygLMiguamVubmFoLnYxLlN1Ym1pdEpvYlJlcXVlc3QuRW52VmFyc0VudHJ5EhgKEHJlc291cmNlX3Byb2ZpbGUYBCABKAkSNgoRcmVzb3VyY2Vfb3ZlcnJpZGUYBSABKAsyGy5qZW5uYWgudjEuUmVzb3VyY2VPdmVycmlkZRIMCgRuYW1lGAYgASgJEhQKDG1hY2hpbmVfdHlwZRgHIAEoCRIZChFib290X2Rpc2tfc2l6ZV9nYhgIIAEoAxIUCgx1c2Vfc3BvdF92bXMYCSABKAgSFwoPc2VydmljZV9hY2NvdW50GAogASgJEhAKCGNvbW1hbmRzGAsgAygJGi4KDEVudlZhcnNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIkwKEVN1Ym1pdEpvYlJlc3BvbnNlEg4KBmpvYl9pZBgBIAEoCRIOCgZzdGF0dXMYAiABKAkSFwoPd29ya2VyX2Fzc2lnbmVkGAMgASgJIhEKD0xpc3RKb2JzUmVxdWVzdCIwChBMaXN0Sm9ic1Jlc3BvbnNlEhwKBGpvYnMYASADKAsyDi5qZW5uYWgudjEuSm9iIt8DCgNKb2ISDgoGam9iX2lkGAEgASgJEhEKCXRlbmFudF9pZBgCIAEoCRIRCglpbWFnZV91cmkYAyABKAkSDgoGc3RhdHVzGAQgASgJEhIKCmNyZWF0ZWRfYXQYBSABKAkSEgoKdXBkYXRlZF9hdBgGIAEoCRIUCgxzY2hlZHVsZWRfYXQYByABKAkSEgoKc3RhcnRlZF9hdBgIIAEoCRIUCgxjb21wbGV0ZWRfYXQYCSABKAkSEwoLcmV0cnlfY291bnQYCiABKAMSEwoLbWF4X3JldHJpZXMYCyABKAMSFQoNZXJyb3JfbWVzc2FnZRgMIAEoCRIaChJnY3BfYmF0Y2hfam9iX25hbWUYDSABKAkSEAoIY29tbWFuZHMYDiADKAkSFQoNZW52X3ZhcnNfanNvbhgPIAEoCRIcChRnY3BfYmF0Y2hfdGFza19ncm91cBgQIAEoCRIMCgRuYW1lGBEgASgJEhgKEHJlc291cmNlX3Byb2ZpbGUYEiABKAkSFAoMbWFjaGluZV90eXBlGBMgASgJEhkKEWJvb3RfZGlza19zaXplX2diGBQgASgDEhQKDHVzZV9zcG90X3ZtcxgVIAEoCBIXCg9zZXJ2aWNlX2FjY291bnQYFiABKAkiGQoXR2V0Q3VycmVudFRlbmFudFJlcXVlc3QibQoYR2V0Q3VycmVudFRlbmFudFJlc3BvbnNlEhEKCXRlbmFudF9pZBgBIAEoCRISCgp1c2VyX2VtYWlsGAIgASgJEhYKDm9hdXRoX3Byb3ZpZGVyGAMgASgJEhIKCmNyZWF0ZWRfYXQYBCABKAkiIgoQQ2FuY2VsSm9iUmVxdWVzdBIOCgZqb2JfaWQYASABKAkiMwoRQ2FuY2VsSm9iUmVzcG9uc2USDgoGam9iX2lkGAEgASgJEg4KBnN0YXR1cxgCIAEoCSIiChBEZWxldGVKb2JSZXF1ZXN0Eg4KBmpvYl9pZBgBIAEoCSI0ChFEZWxldGVKb2JSZXNwb25zZRIOCgZqb2JfaWQYASABKAkSDwoHbWVzc2FnZRgCIAEoCSIfCg1HZXRKb2JSZXF1ZXN0Eg4KBmpvYl9pZBgBIAEoCSItCg5HZXRKb2JSZXNwb25zZRIbCgNqb2IYASABKAsyDi5qZW5uYWgudjEuSm9iMswDChFEZXBsb3ltZW50U2VydmljZRJGCglTdWJtaXRKb2ISGy5qZW5uYWgudjEuU3VibWl0Sm9iUmVxdWVzdBocLmplbm5haC52MS5TdWJtaXRKb2JSZXNwb25zZRJDCghMaXN0Sm9icxIaLmplbm5haC52MS5MaXN0Sm9ic1JlcXVlc3QaGy5qZW5uYWgudjEuTGlzdEpvYnNSZXNwb25zZRJbChBHZXRDdXJyZW50VGVuYW50EiIuamVubmFoLnYxLkdldEN1cnJlbnRUZW5hbnRSZXF1ZXN0GiMuamVubmFoLnYxLkdldEN1cnJlbnRUZW5hbnRSZXNwb25zZRJGCglDYW5jZWxKb2ISGy5qZW5uYWgudjEuQ2FuY2VsSm9iUmVxdWVzdBocLmplbm5haC52MS5DYW5jZWxKb2JSZXNwb25zZRJGCglEZWxldGVKb2ISGy5qZW5uYWgudjEuRGVsZXRlSm9iUmVxdWVzdBocLmplbm5haC52MS5EZWxldGVKb2JSZXNwb25zZRI9CgZHZXRKb2ISGC5qZW5uYWgudjEuR2V0Sm9iUmVxdWVzdBoZLmplbm5haC52MS5HZXRKb2JSZXNwb25zZUIyWjBnaXRodWIuY29tL2FscGhhdXNsYWJzL2plbm5haC9nZW4vcHJvdG87amVubmFodjFiBnByb3RvMw");
 
 /**
  * ResourceOverride allows callers to specify custom compute resource values.
@@ -79,6 +79,48 @@ export type SubmitJobRequest = Message<"jennah.v1.SubmitJobRequest"> & {
    * @generated from field: jennah.v1.ResourceOverride resource_override = 5;
    */
   resourceOverride?: ResourceOverride;
+
+  /**
+   * Optional user-provided job name.
+   *
+   * @generated from field: string name = 6;
+   */
+  name: string;
+
+  /**
+   * Resolved machine type: "e2-standard-4", "n1-standard-16", etc.
+   *
+   * @generated from field: string machine_type = 7;
+   */
+  machineType: string;
+
+  /**
+   * Boot disk size in GB (default: 50).
+   *
+   * @generated from field: int64 boot_disk_size_gb = 8;
+   */
+  bootDiskSizeGb: bigint;
+
+  /**
+   * Whether to use Spot VMs (default: false).
+   *
+   * @generated from field: bool use_spot_vms = 9;
+   */
+  useSpotVms: boolean;
+
+  /**
+   * Custom service account email (optional).
+   *
+   * @generated from field: string service_account = 10;
+   */
+  serviceAccount: string;
+
+  /**
+   * Commands to execute in the container.
+   *
+   * @generated from field: repeated string commands = 11;
+   */
+  commands: string[];
 };
 
 /**
@@ -173,6 +215,103 @@ export type Job = Message<"jennah.v1.Job"> & {
    * @generated from field: string created_at = 5;
    */
   createdAt: string;
+
+  /**
+   * @generated from field: string updated_at = 6;
+   */
+  updatedAt: string;
+
+  /**
+   * @generated from field: string scheduled_at = 7;
+   */
+  scheduledAt: string;
+
+  /**
+   * @generated from field: string started_at = 8;
+   */
+  startedAt: string;
+
+  /**
+   * @generated from field: string completed_at = 9;
+   */
+  completedAt: string;
+
+  /**
+   * @generated from field: int64 retry_count = 10;
+   */
+  retryCount: bigint;
+
+  /**
+   * @generated from field: int64 max_retries = 11;
+   */
+  maxRetries: bigint;
+
+  /**
+   * @generated from field: string error_message = 12;
+   */
+  errorMessage: string;
+
+  /**
+   * @generated from field: string gcp_batch_job_name = 13;
+   */
+  gcpBatchJobName: string;
+
+  /**
+   * @generated from field: repeated string commands = 14;
+   */
+  commands: string[];
+
+  /**
+   * @generated from field: string env_vars_json = 15;
+   */
+  envVarsJson: string;
+
+  /**
+   * @generated from field: string gcp_batch_task_group = 16;
+   */
+  gcpBatchTaskGroup: string;
+
+  /**
+   * User-facing job name.
+   *
+   * @generated from field: string name = 17;
+   */
+  name: string;
+
+  /**
+   * Resource preset used at submission: "small", "medium", "large", "xlarge".
+   *
+   * @generated from field: string resource_profile = 18;
+   */
+  resourceProfile: string;
+
+  /**
+   * Resolved machine type: "e2-standard-4", "n1-standard-16", etc.
+   *
+   * @generated from field: string machine_type = 19;
+   */
+  machineType: string;
+
+  /**
+   * Boot disk size in GB.
+   *
+   * @generated from field: int64 boot_disk_size_gb = 20;
+   */
+  bootDiskSizeGb: bigint;
+
+  /**
+   * Whether Spot VMs were requested.
+   *
+   * @generated from field: bool use_spot_vms = 21;
+   */
+  useSpotVms: boolean;
+
+  /**
+   * Custom service account email (optional).
+   *
+   * @generated from field: string service_account = 22;
+   */
+  serviceAccount: string;
 };
 
 /**
@@ -308,6 +447,40 @@ export const DeleteJobResponseSchema: GenMessage<DeleteJobResponse> = /*@__PURE_
   messageDesc(file_proto_jennah, 11);
 
 /**
+ * @generated from message jennah.v1.GetJobRequest
+ */
+export type GetJobRequest = Message<"jennah.v1.GetJobRequest"> & {
+  /**
+   * @generated from field: string job_id = 1;
+   */
+  jobId: string;
+};
+
+/**
+ * Describes the message jennah.v1.GetJobRequest.
+ * Use `create(GetJobRequestSchema)` to create a new message.
+ */
+export const GetJobRequestSchema: GenMessage<GetJobRequest> = /*@__PURE__*/
+  messageDesc(file_proto_jennah, 12);
+
+/**
+ * @generated from message jennah.v1.GetJobResponse
+ */
+export type GetJobResponse = Message<"jennah.v1.GetJobResponse"> & {
+  /**
+   * @generated from field: jennah.v1.Job job = 1;
+   */
+  job?: Job;
+};
+
+/**
+ * Describes the message jennah.v1.GetJobResponse.
+ * Use `create(GetJobResponseSchema)` to create a new message.
+ */
+export const GetJobResponseSchema: GenMessage<GetJobResponse> = /*@__PURE__*/
+  messageDesc(file_proto_jennah, 13);
+
+/**
  * Main service definition for Jennah.
  *
  * @generated from service jennah.v1.DeploymentService
@@ -362,6 +535,16 @@ export const DeploymentService: GenService<{
     methodKind: "unary";
     input: typeof DeleteJobRequestSchema;
     output: typeof DeleteJobResponseSchema;
+  },
+  /**
+   * Get a single job's full details.
+   *
+   * @generated from rpc jennah.v1.DeploymentService.GetJob
+   */
+  getJob: {
+    methodKind: "unary";
+    input: typeof GetJobRequestSchema;
+    output: typeof GetJobResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_proto_jennah, 0);
