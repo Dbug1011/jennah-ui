@@ -5,13 +5,24 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import TuneIcon from "@mui/icons-material/Tune";
 import AddIcon from "@mui/icons-material/Add";
 import { Search } from "lucide-react";
+import { FilterPopover, type FilterOptions } from "@/components/FilterPopover";
 
-export function SearchBar() {
+interface SearchBarProps {
+  onFilterChange?: (filters: FilterOptions) => void;
+  availableProjects?: string[];
+  activeFilterCount?: number;
+}
+
+export function SearchBar({
+  onFilterChange,
+  availableProjects = [],
+  activeFilterCount = 0,
+}: SearchBarProps) {
   const location = useLocation();
   const pathname = location.pathname.replace(/\/$/, "") || "/";
+  
   return (
     <div className="flex flex-col sm:flex-row gap-4 mb-16">
       <InputGroup className="flex flex-row h-12 rounded-full items-center border border-gray-200 bg-gray-50 hover:border-gray-300 transition-colors">
@@ -24,14 +35,10 @@ export function SearchBar() {
         </InputGroupAddon>
       </InputGroup>
 
-      <Button
-        variant="outline"
-        size="sm"
-        className="h-12 rounded-full border-gray-300 bg-white hover:bg-gray-50 font-normal text-sm transition-colors"
-      >
-        <TuneIcon className="w-4 h-4 text-gray-600" />
-        Filter
-      </Button>
+      <FilterPopover
+        onFilterChange={onFilterChange || (() => {})}
+        availableProjects={availableProjects}
+      />
       <div className="h-12 flex items-center justify-center rounded-full px-6 bg-black hover:bg-gray-900 text-white font-normal text-sm transition-colors">
         <Link
           to={pathname === "/projects" ? "/projects/create" : "/jobs/create"}
