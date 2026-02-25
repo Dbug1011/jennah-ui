@@ -1,3 +1,4 @@
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Table,
@@ -8,62 +9,163 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import type { Job as BackendJob } from "@/gen/proto/jennah_pb";
 
-const statusMap: Record<string, { className: string; label: string }> = {
-  Running: {
-    className: "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
-    label: "Running",
-  },
-  Completed: {
-    className:
-      "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300",
-    label: "Completed",
-  },
-  Pending: {
-    className: "bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300",
-    label: "Pending",
-  },
-  Scheduled: {
-    className:
-      "bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300",
-    label: "Scheduled",
-  },
-  Failed: {
-    className: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
-    label: "Failed",
-  },
-  Cancelled: {
-    className: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
-    label: "Cancelled",
-  },
-};
+function getStatusInfo(status: string): {
+  className: string;
+  label: string;
+} {
+  const statusMap: Record<string, { className: string; label: string }> = {
+    RUNNING: {
+      className:
+        "bg-blue-50 text-sm text-blue-700 dark:bg-blue-950 dark:text-blue-300",
+      label: "Running",
+    },
+    COMPLETED: {
+      className:
+        "bg-green-50 text-sm text-green-700 dark:bg-green-950 dark:text-green-300",
+      label: "Completed",
+    },
+    PENDING: {
+      className:
+        "bg-sky-50 text-sm text-sky-700 dark:bg-sky-950 dark:text-sky-300",
+      label: "Pending",
+    },
+    SCHEDULED: {
+      className:
+        "bg-purple-50 text-sm text-purple-700 dark:bg-purple-950 dark:text-purple-300",
+      label: "Scheduled",
+    },
+    FAILED: {
+      className:
+        "bg-red-50 text-sm text-red-700 dark:bg-red-950 dark:text-red-300",
+      label: "Failed",
+    },
+    CANCELLED: {
+      className:
+        "bg-red-50 text-sm text-red-700 dark:bg-red-950 dark:text-red-300",
+      label: "Cancelled",
+    },
+  };
 
-interface ExecutionHistoryItem {
-  id: string;
-  status:
-    | "Running"
-    | "Completed"
-    | "Pending"
-    | "Scheduled"
-    | "Failed"
-    | "Cancelled";
-  jobName: string;
-  jobId: string;
-  runId: string;
-  user: string;
-  duration: string;
+  return statusMap[status] || statusMap.PENDING;
 }
+
+type SortField = "status" | "name" | "createdAt" | "tenantId" | "updatedAt";
+type SortOrder = "asc" | "desc";
 
 interface ExecutionHistoryProps {
-  history: ExecutionHistoryItem[];
+  jobs: BackendJob[];
 }
 
-export function ExecutionHistory({ history }: ExecutionHistoryProps) {
+export function ExecutionHistory({ jobs }: ExecutionHistoryProps) {
   const navigate = useNavigate();
+  const [sortField, setSortField] = useState<SortField>("updatedAt");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 
   const handleView = (jobId: string) => {
     navigate(`/jobs/${jobId}`);
   };
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "N/A";
+    try {
+      return new Date(dateString).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch {
+      return dateString;
+    }
+  };
+
+  const sortedJobs = useMemo(() => {
+    const sorted = [...jobs].sort((a, b) => {
+      let aVal: any;
+      let bVal: any;
+
+      switch (sortField) {
+        case "status":
+          aVal = a.status?.toLowerCase() || "";
+          bVal = b.status?.toLowerCase() || "";
+          break;
+        case "name":
+          aVal = a.name?.toLowerCase() || "";
+          bVal = b.name?.toLowerCase() || "";
+          break;
+        case "createdAt":
+          aVal = new Date(a.createdAt || 0).getTime();
+          bVal = new Date(b.createdAt || 0).getTime();
+          break;
+        case "updatedAt":
+          aVal = new Date(a.updatedAt || 0).getTime();
+          bVal = new Date(b.updatedAt || 0).getTime();
+          break;
+        case "tenantId":
+          aVal = a.tenantId?.toLowerCase() || "";
+          bVal = b.tenantId?.toLowerCase() || "";
+          break;
+        default:
+          return 0;
+      }
+
+      if (aVal < bVal) return sortOrder === "asc" ? -1 : 1;
+      if (aVal > bVal) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+    return sorted;
+  }, [jobs, sortField, sortOrder]);
+
+  const SortableHeader = ({
+    field,
+    label,
+    sortable = true,
+  }: {
+    field: SortField;
+    label: string;
+    sortable?: boolean;
+  }) => (
+    <TableHead
+      className={`px-6 py-4 text-xs font-semibold text-gray-600 text-left ${
+        sortable ? "cursor-pointer hover:bg-gray-50" : ""
+      }`}
+      onClick={() => sortable && handleSort(field)}
+    >
+      <div className="flex items-center gap-2">
+        {label}
+        {sortable && (
+          <span className="text-gray-400 text-xs">
+            {sortField === field ? (sortOrder === "asc" ? "▲" : "▼") : "↕"}
+          </span>
+        )}
+      </div>
+    </TableHead>
+  );
+
+  if (jobs.length === 0) {
+    return (
+      <div>
+        <h1 className="text-3xl md:text-4xl font-semibold text-black mb-8 leading-tight">
+          Execution History
+        </h1>
+        <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white p-8 text-center">
+          <p className="text-gray-500">No jobs found</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -74,65 +176,57 @@ export function ExecutionHistory({ history }: ExecutionHistoryProps) {
         <Table>
           <TableHeader>
             <TableRow className="border-b border-gray-100 bg-white hover:bg-white">
-              <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-left">
-                Status
-              </TableHead>
-              <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-left">
-                Job Name
-              </TableHead>
+              <SortableHeader field="status" label="Status" />
+              <SortableHeader field="name" label="Job Name" />
               <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-left">
                 Run ID
               </TableHead>
-              <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-left">
-                User
-              </TableHead>
-              <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-left">
-                Duration
-              </TableHead>
+              <SortableHeader field="tenantId" label="Project" />
+              <SortableHeader field="updatedAt" label="Last Run" />
               <TableHead className="px-6 py-4 text-xs font-semibold text-gray-600 text-right">
                 Actions
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {history.map((execution) => (
+            {sortedJobs.map((job) => (
               <TableRow
-                key={execution.id}
+                key={job.jobId}
                 className="border-b border-gray-100 hover:bg-gray-50/40 transition-colors"
               >
                 <TableCell className="px-6 py-4 text-sm">
-                  <Badge className={statusMap[execution.status]?.className}>
-                    {statusMap[execution.status]?.label || execution.status}
+                  <Badge className={getStatusInfo(job.status).className}>
+                    {getStatusInfo(job.status).label}
                   </Badge>
                 </TableCell>
                 <TableCell className="px-6 py-4 text-sm font-medium text-black">
-                  {execution.jobName}
+                  {job.name || "Unnamed Job"}
                 </TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-600">
-                  {execution.runId}
+                  {job.jobId.slice(-8)}
                 </TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-600">
-                  {execution.user}
+                  {job.tenantId}
                 </TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-600">
-                  {execution.duration}
+                  {formatDate(job.updatedAt || job.createdAt)}
                 </TableCell>
                 <TableCell className="px-6 py-4 text-sm text-right">
                   <button
                     onClick={() =>
-                      execution.status === "Completed" &&
-                      handleView(execution.jobId)
+                      job.status?.toLowerCase() === "completed" &&
+                      handleView(job.jobId)
                     }
-                    disabled={execution.status !== "Completed"}
+                    disabled={job.status?.toLowerCase() !== "completed"}
                     className={`font-medium text-xs transition-colors ${
-                      execution.status === "Completed"
+                      job.status?.toLowerCase() === "completed"
                         ? "text-gray-600 hover:text-black cursor-pointer"
                         : "text-gray-400 cursor-not-allowed"
                     }`}
                   >
-                    {execution.status === "Running"
+                    {job.status?.toLowerCase() === "running"
                       ? "Stop"
-                      : execution.status === "Completed"
+                      : job.status?.toLowerCase() === "completed"
                         ? "View"
                         : "Retry"}
                   </button>

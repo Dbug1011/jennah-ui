@@ -3,21 +3,13 @@ import { useState, useEffect, useMemo } from "react";
 // COMPONENTS
 import { JobsCard } from "@/components/JobsCard";
 import { SearchBar } from "@/components/SearchBar";
+import { JobsSort } from "@/components/JobsSort";
 import { NavigationBar } from "../components/NavigationBar";
-// import { Button } from "@/components/ui/button";
-// import {
-//   InputGroup,
-//   InputGroupAddon,
-//   InputGroupInput,
-// } from "@/components/ui/input-group";
-
 import { ExecutionHistory } from "@/components/ExecutionHistory";
 // import { AccountSection } from "@/components/AccountSection";
 import { useListJobs } from "@/api/hooks/useListJobs";
 import { useGetCurrentTenant } from "@/api/hooks/useGetCurrentTenant";
-import type { Job as BackendJob } from "@/gen/proto/jennah_pb";
 import type { FilterOptions } from "@/components/FilterPopover";
-
 
 // INTERFACES
 interface JobWithMetadata {
@@ -32,28 +24,13 @@ interface JobWithMetadata {
   createdAt: string;
 }
 
-interface ExecutionHistoryItem {
-  id: string;
-  status:
-    | "Running"
-    | "Completed"
-    | "Failed"
-    | "Pending"
-    | "Scheduled"
-    | "Cancelled";
-  jobName: string;
-  jobId: string;
-  runId: string;
-  user: string;
-  duration: string;
-}
-
 export default function Jobs() {
-  const [executionHistory] = useState<ExecutionHistoryItem[]>([]);
   const [activeFilters, setActiveFilters] = useState<FilterOptions>({
     statuses: [],
     projectNames: [],
   });
+  const [sortField, setSortField] = useState<string>("createdAt");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const { fetchJobs, jobs: backendJobs, loading, error } = useListJobs();
   const { getCurrentTenant, tenant } = useGetCurrentTenant();
 
@@ -63,12 +40,12 @@ export default function Jobs() {
   }, []);
 
   // Filter to only show jobs belonging to the current tenant (client-side safety net)
-  const filteredJobs = tenant
+  const tenantFilteredJobs = tenant
     ? (backendJobs || []).filter((j: any) => j.tenantId === tenant.tenantId)
     : (backendJobs || []);
 
   // Map backend jobs to UI format
-  const jobs: JobWithMetadata[] = filteredJobs.map((job: any) => ({
+  const jobs: JobWithMetadata[] = tenantFilteredJobs.map((job: any) => ({
     $typeName: "JobCardJob",
     jobId: job.jobId,
     id: job.jobId,
@@ -117,8 +94,51 @@ export default function Jobs() {
     });
   }, [jobs, activeFilters]);
 
+  // Apply sorting
+  const sortedJobs = useMemo(() => {
+    const sorted = [...filteredJobs].sort((a, b) => {
+      let aVal: any;
+      let bVal: any;
+
+      switch (sortField) {
+        case "status":
+          aVal = a.status?.toLowerCase() || "";
+          bVal = b.status?.toLowerCase() || "";
+          break;
+        case "workloadName":
+          aVal = a.workloadName?.toLowerCase() || "";
+          bVal = b.workloadName?.toLowerCase() || "";
+          break;
+        case "projectName":
+          aVal = a.projectName?.toLowerCase() || "";
+          bVal = b.projectName?.toLowerCase() || "";
+          break;
+        case "createdAt":
+          aVal = new Date(a.createdAt || 0).getTime();
+          bVal = new Date(b.createdAt || 0).getTime();
+          break;
+        default:
+          return 0;
+      }
+
+      if (aVal < bVal) return sortOrder === "asc" ? -1 : 1;
+      if (aVal > bVal) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+    return sorted;
+  }, [filteredJobs, sortField, sortOrder]);
+
   const handleFilterChange = (filters: FilterOptions) => {
     setActiveFilters(filters);
+  };
+
+  const handleSortChange = (field: string) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("desc");
+    }
   };
 
   useEffect(() => {
@@ -145,6 +165,13 @@ export default function Jobs() {
           }
         />
 
+        <JobsSort
+          sortField={sortField}
+          sortOrder={sortOrder}
+          onSortChange={handleSortChange}
+          onSortOrderToggle={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+        />
+
         {loading && (
           <div className="text-center py-10">
             <p className="text-gray-500">Loading jobs...</p>
@@ -167,7 +194,7 @@ export default function Jobs() {
               </p>
             </div>
           )}
-          {filteredJobs.map((job) => (
+          {sortedJobs.map((job) => (
             <JobsCard
               key={job.jobId}
               job={job as any}
@@ -177,7 +204,7 @@ export default function Jobs() {
           ))}
         </div>
         <div className="mb-20">
-          <ExecutionHistory history={executionHistory} />
+          <ExecutionHistory jobs={tenantFilteredJobs} />
         </div>
         {/* <AccountSection /> */}
       </main>
